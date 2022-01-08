@@ -183,7 +183,7 @@ function removePath(path) {
 
 function mkDir(dirPath) {
     try {
-        dirPath=initPath(dirPath)
+        dirPath=initPath(dirPath,false)
         const dinfo = getFInfo(dirPath)
         if (dinfo != null) {
             if (dinfo.isFile()) {
