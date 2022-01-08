@@ -56,6 +56,7 @@ module.exports.static_init = (c_mlog) => {
  */
 function readDir(dirPath) {
     try {
+        dirPath=initPath(dirPath)
         info("read dir", dirPath)
         return isDir(dirPath) ? FSM.readdirSync(dirPath) : []//[p1,p2]
     } catch (e) {
@@ -72,6 +73,7 @@ function readDir(dirPath) {
  */
 function readFile(filePath, encoding) {
     try {
+        filePath=initPath(filePath)
         info("read file", filePath)
         return FSM.readFileSync(filePath, encoding != null ? encoding : "UTF-8")
     } catch (e) {
@@ -122,6 +124,7 @@ function writeFile(filePath, conter, isAppend, encoding,isLog=false) {
  */
 function getFInfo(path) {
     try {
+        path=initPath(path)
         if (isExist(path)) {
             return FSM.statSync(path, false)
         } else {
@@ -135,6 +138,7 @@ function getFInfo(path) {
 
 function isExist(path) {
     try {
+        path=initPath(path,false)
         return typeof path == "string" && FSM.accessSync(path) == null
     } catch (e) {
         if (e.message.indexOf("no such file or directory") >= 0) {
@@ -148,6 +152,7 @@ function isExist(path) {
 
 function isDir(path) {
     try {
+        path=initPath(path,false)
         const pinfo = getFInfo(path)
         return pinfo != null && pinfo.isDirectory()
     } catch (e) {
@@ -157,6 +162,7 @@ function isDir(path) {
 
 function removePath(path) {
     try {
+        path=initPath(path)
         const pinfo = getFInfo(path)
         if (pinfo != null) {
             if (pinfo.isDirectory()) {
@@ -177,6 +183,7 @@ function removePath(path) {
 
 function mkDir(dirPath) {
     try {
+        dirPath=initPath(dirPath)
         const dinfo = getFInfo(dirPath)
         if (dinfo != null) {
             if (dinfo.isFile()) {
@@ -198,6 +205,8 @@ function mkDir(dirPath) {
 
 function copyFile(srcFPath, dstFPath) {
     try {
+        srcFPath=initPath(srcFPath)
+        dstFPath=initPath(dstFPath)
         const sInfo = getFInfo(srcFPath)
         if (sInfo != null && sInfo.isFile()) {
             const dInfo = getFInfo(dstFPath)
@@ -236,6 +245,8 @@ function copyFile(srcFPath, dstFPath) {
  */
 function copyDir(srcPath, dstPath,upProgressEvent) {
     try{
+        srcPath=initPath(srcPath)
+        dstPath=initPath(dstPath)
         // check dst path
         if (!dstPath.endsWith("/")) {
             dstPath += "/"
@@ -329,6 +340,8 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
         }
     }
     try {
+        zipPath=initPath(zipPath)
+        dstPath=initPath(dstPath)
         if (isShowLoading) {
             wx.showLoading({
                 title: '解压...',
@@ -374,13 +387,13 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
     }
 }
 
-function initPath(path){
+function initPath(path,isCheckParentPath=true){
     if(typeof path=="string"){
         //check is absolute path
         path=(path.startsWith("/")?"":USER_DIR + "/")+path
         //check parent path
         const ppath = path.substr(0, path.lastIndexOf("/"))
-        if (isDir(ppath) == false) {
+        if (isDir(ppath) == false&&isCheckParentPath) {
             mkDir(ppath)
         }
         return path
