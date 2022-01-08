@@ -393,7 +393,7 @@ function initPath(path,isCheckParentPath=true){
         path=(path.startsWith("/")?"":USER_DIR + "/")+path
         //check parent path
         const ppath = path.substr(0, path.lastIndexOf("/"))
-        if (isDir(ppath) == false&&isCheckParentPath) {
+        if (isCheckParentPath&&isDir(ppath) == false) {
             mkDir(ppath)
         }
         return path
