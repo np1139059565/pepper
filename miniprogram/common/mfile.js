@@ -99,7 +99,9 @@ function writeFile(filePath, conter, isAppend, encoding,isLog=false) {
             //cover
             : FSM.writeFileSync(filePath, conter, encoding) == null)
 
-        info((isAppend ? "append" : "write") + " " + filePath, encoding, code,null,isLog)
+        if(isLog==false){
+            info((isAppend ? "append" : "write") + " " + filePath, encoding, code)
+        }
         return code
     } catch (e) {
         err("write file is err", e,null,null,isLog)

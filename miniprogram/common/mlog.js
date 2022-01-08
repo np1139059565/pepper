@@ -1,8 +1,23 @@
 const mfile = require("mfile.js")
 
-module.exports.init1 = function () {
+const LOG_TYPES={
+    DEBUG:"DEBUG",
+        INFO:"INFO"
+}
+var logType=LOG_TYPES.DEBUG
+
+module.exports.init1 = function (s_logType) {
     try {
-        info("init log")
+        info("init log...")
+        // switch (s_logType.toUpperCase()){
+        //     case LOG_TYPES.DEBUG:
+        //         logType=LOG_TYPES.DEBUG;
+        //         break;
+        //     default:
+        //         logType=LOG_TYPES.INFO;
+        //         break;
+        // }
+        // info("switch mlog type",logType)
         module.exports.info = info
         module.exports.err = err
     } catch (e) {
@@ -12,7 +27,9 @@ module.exports.init1 = function () {
 
 function info(i1, i2, i3, i4, i5) {
     writeLog("mlog info", getMsg(i1, i2, i3, i4, i5))
-    showToast("mlog info:" + getMsg(i1, i2, i3, i4, i5))
+    if(logType==LOG_TYPES.DEBUG){
+        showToast("mlog info:" + getMsg(i1, i2, i3, i4, i5))
+    }
     console.info("mlog info", getMsg(i1, i2, i3, i4, i5))
 }
 
@@ -39,11 +56,11 @@ function getStr(e) {
 }
 
 function getMsg(e1, e2, e3, e4, e5) {
-    return (getStr(e1) + "," + getStr(e2) + "," + getStr(e3) + "," + getStr(e4) + "," + getStr(e5)).replaceAll(",,", ",")
+    return (getStr(e1) + "," + getStr(e2) + "," + getStr(e3) + "," + getStr(e4) + "," + getStr(e5)).replaceAll(/,,/g, ",")
 }
 
 function showToast(title, icon, duration) {
-    wx.showModal({
+    wx.showToast({
         title: title,
         icon: icon != null ? icon : "loading",
         duration: duration > 0 ? duration : 2000
