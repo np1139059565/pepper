@@ -70,5 +70,5 @@ function writeLog(title,conter){
     mfile.writeFile("mlog/"+tdate.split(" ")[0]+".mlog",
         tdate+" "+title+":\r\n"+conter+"\r\n", true,null,true)
 }
-module.showToast=showToast
-module.showModal=showModal
+module.exports.showToast=showToast
+module.exports.showModal=showModal
