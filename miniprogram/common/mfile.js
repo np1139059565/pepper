@@ -3,20 +3,31 @@ const USER_DIR = wx.env.USER_DATA_PATH//wxfile://usr
 const FSM = wx.getFileSystemManager()
 
 var mlog = require("mlog.js")
-function info(i1,i2,i3,i4) {
+
+/**
+ *
+ * @param i1
+ * @param i2
+ * @param i3
+ * @param i4
+ * @param isLog 防止造成死循环
+ */
+function info(i1,i2,i3,i4,isLog=false) {
     try {
-        if (mlog.info == null) {
-            mlog.showToast("mfile:"+i1+","+i2+","+i3+","+i4)
-        } else mlog.info("mfile", i1,i2,i3,i4)
+        if (mlog.info == null||isLog) {
+            mlog.showToast("mfile:"+mlog.getMsg(i1,i2,i3,i4))
+        } else {
+            mlog.info("mfile", i1, i2, i3, i4)
+        }
     } catch (e) {
         console.error(e)
     }
 }
 
-function err(e1, e2, e3,e4) {
+function err(e1, e2, e3,e4,isLog=false) {
     try {
-        if (mlog.err == null) {
-            mlog.showModal("mfile:"+e1+","+e2+","+e3+","+e4)
+        if (mlog.err == null||isLog) {
+            mlog.showModal("mfile:"+mlog.getMsg(e1, e2, e3,e4))
         } else mlog.err("mfile", e1,e2,e3,e4)
     } catch (e) {
         console.error(e)
@@ -78,7 +89,7 @@ function writeFile(filePath, conter, isAppend, encoding,isLog=false) {
         //check path
         const ppath = filePath.substr(0, filePath.lastIndexOf("/"))
         if (isDir(ppath) == false) {
-            mkDir(ppath)
+            mkDir(ppath,isLog)
         }
         //encode
         encoding = (encoding != null ? encoding : "utf8")
@@ -87,13 +98,10 @@ function writeFile(filePath, conter, isAppend, encoding,isLog=false) {
             //cover
             : FSM.writeFileSync(filePath, conter, encoding) == null)
 
-        //防止造成死循环
-        if(isLog==false){
-            info((isAppend ? "append" : "write") + " " + filePath, encoding, code)
-        }
+        info((isAppend ? "append" : "write") + " " + filePath, encoding, code,null,isLog)
         return code
     } catch (e) {
-        err("write file is err", e)
+        err("write file is err", e,null,null,isLog)
         return false
     }
 }

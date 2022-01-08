@@ -1,6 +1,6 @@
-const mfile=require("mfile.js")
+const mfile = require("mfile.js")
 
-module.exports.init1 = function (){
+module.exports.init1 = function () {
     try {
         info("init log")
         module.exports.info = info
@@ -9,43 +9,52 @@ module.exports.init1 = function (){
         err(e)
     }
 }
-function info(i1,i2,i3,i4,i5) {
-    writeLog("mlog info",getMsg(i1)+","+  getMsg(i2)+","+  getMsg(i3)+","+  getMsg(i4)+","+  getMsg(i5))
-    showToast("mlog info:"+  getMsg(i1)+","+  getMsg(i2)+","+  getMsg(i3)+","+  getMsg(i4)+","+  getMsg(i5))
-    console.info("mlog info",getMsg(i1),getMsg(i2),getMsg(i3),getMsg(i4),getMsg(i5))
+
+function info(i1, i2, i3, i4, i5) {
+    writeLog("mlog info", getMsg(i1, i2, i3, i4, i5))
+    showToast("mlog info:" + getMsg(i1, i2, i3, i4, i5))
+    console.info("mlog info", getMsg(i1, i2, i3, i4, i5))
 }
+
 function err(e1, e2, e3, e4, e5) {
-    writeLog("mlog err",getMsg(e1)+","+getMsg(e2)+","+getMsg(e3)+","+ getMsg(e4)+","+ getMsg(e5))
-    showModal("mlog err:",getMsg(e1)+","+getMsg(e2)+","+getMsg(e3)+","+ getMsg(e4)+","+ getMsg(e5))
-    console.error("mlog err",getMsg(e1),getMsg(e2),getMsg(e3),getMsg(e4),getMsg(e5))
+    writeLog("mlog err", getMsg(e1, e2, e3, e4, e5))
+    showModal("mlog err:", getMsg(e1, e2, e3, e4, e5))
+    console.error("mlog err", getMsg(e1, e2, e3, e4, e5))
 }
-function getMsg(e) {
+
+function getStr(e) {
     try {
         if (e == null) {
             return ""
-        } else if (e instanceof TypeError||e.stack!=null) {
+        } else if (e instanceof TypeError || e.stack != null) {
             return e.stack
-        } else if (e instanceof Error||e.errMsg!=null||e.message!=null) {//yun err
-            return e.errMsg||e.message
-        }else {
+        } else if (e instanceof Error || e.errMsg != null || e.message != null) {//yun err
+            return e.errMsg || e.message
+        } else {
             return e
         }
     } catch (e1) {
-        console.error("getMsg is err",e1)
+        console.error("getMsg is err", e1)
     }
 }
-function showToast(title,icon,duration){
+
+function getMsg(e1, e2, e3, e4, e5) {
+    return (getStr(e1) + "," + getStr(e2) + "," + getStr(e3) + "," + getStr(e4) + "," + getStr(e5)).replaceAll(",,", ",")
+}
+
+function showToast(title, icon, duration) {
     wx.showModal({
-        title:title,
-        icon:icon!=null?icon:"loading",
-        duration:duration>0?duration:2000
+        title: title,
+        icon: icon != null ? icon : "loading",
+        duration: duration > 0 ? duration : 2000
     })
 }
-function showModal(title,content, ocallback, ccallback) {
+
+function showModal(title, content, ocallback, ccallback) {
     //ok,cancel
     wx.showModal({
         // title: conter,//titile 无换行
-        content:content,
+        content: content,
         showCancel: typeof ccallback == "function",
         confirmText: "确认",
         cancelText: "取消",
@@ -66,11 +75,14 @@ function showModal(title,content, ocallback, ccallback) {
         }
     })
 }
-function writeLog(title,conter){
-    const tdate=new Date().toJSON()
 
-    mfile.writeFile("mlog/"+tdate.split("T")[0]+".mlog",
-        tdate+" "+title+":\r\n"+conter+"\r\n", true,null,true)
+function writeLog(title, conter) {
+    const tdate = new Date().toJSON()
+
+    mfile.writeFile("mlog/" + tdate.split("T")[0] + ".mlog",
+        tdate + " " + title + ":\r\n" + conter + "\r\n", true, null, true)
 }
+
 module.exports.showToast=showToast
 module.exports.showModal=showModal
+module.exports.getMsg=getMsg
