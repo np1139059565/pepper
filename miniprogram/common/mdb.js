@@ -72,7 +72,10 @@ function query(tableName,callback){
             if(code){
                 if(null!=r.result.code&&!r.result.code){
                     code=false
-                    err("database err",r.result.errMsg)
+                    err(r.result.errMsg)
+                }else if(r.result.data.length==0){
+                    code=false
+                    err("not find table",tableName)
                 }else{
                     r=r.result.data[0].conter
                 }
