@@ -95,7 +95,7 @@ function runEvent(eventName, data, callback) {
                     var code = r.errMsg.endsWith(":ok")
                     if (!code) {
                         err(r.errMsg)
-                    }else if(eventName=="database"){
+                    }else if(eventName=="yun_hand_db"){
                         //database res
                         if(code&&null!=r.result.code&&!r.result.code){
                             code=false
