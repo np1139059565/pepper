@@ -73,7 +73,7 @@ function query(tableName,callback){
                     code=false
                     err("database err",r.result.errMsg)
                 }else{
-                    r=r.result.data
+                    r=r.result.data[0].conter
                 }
             }
             callback(code,r)
