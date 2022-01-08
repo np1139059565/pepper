@@ -53,7 +53,8 @@ module.exports.DB_TABLE_NAME=()=>{
     return DB_TABLE_NAME
 }
 const DB_TABLE_NAME={
-    KEY_LIST:"tb_key"
+    KEY_LIST:"tb_key",
+    COUNT_DAY:"tb_count_d"
 }
 const DB_GEO_TYPE={
     WHERE:"where"
