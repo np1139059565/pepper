@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const mfile=require("mfile.js")
+=======
+const mfile=require("common/mfile.js")
+>>>>>>> 94fef257ae649e1c5cc030955e4262b3630b1ea6
 
 module.exports.init1 = function (){
     try {
