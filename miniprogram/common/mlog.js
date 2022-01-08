@@ -6,7 +6,7 @@ const LOG_TYPES={
 }
 var logType=LOG_TYPES.DEBUG
 
-module.exports.init1 = function (s_logType) {
+module.exports.static_init = function (s_logType) {
     try {
         info("init log...")
         // switch (s_logType.toUpperCase()){
@@ -17,7 +17,7 @@ module.exports.init1 = function (s_logType) {
         //         logType=LOG_TYPES.INFO;
         //         break;
         // }
-        // info("switch mlog type",logType)
+        info("switch mlog type",logType)
         module.exports.info = info
         module.exports.err = err
     } catch (e) {
@@ -28,7 +28,7 @@ module.exports.init1 = function (s_logType) {
 function info(i1, i2, i3, i4, i5) {
     writeLog("mlog info", getMsg(i1, i2, i3, i4, i5))
     if(logType==LOG_TYPES.DEBUG){
-        showToast("mlog info:" + getMsg(i1, i2, i3, i4, i5))
+        showToast(getMsg(i1, i2, i3, i4, i5))
     }
     console.info("mlog info", getMsg(i1, i2, i3, i4, i5))
 }
@@ -100,6 +100,6 @@ function writeLog(title, conter) {
         tdate + " " + title + ":\r\n" + conter + "\r\n", true, null, true)
 }
 
-module.exports.showToast=showToast
-module.exports.showModal=showModal
-module.exports.getMsg=getMsg
+module.exports.static_showToast=showToast
+module.exports.static_showModal=showModal
+module.exports.static_getMsg=getMsg

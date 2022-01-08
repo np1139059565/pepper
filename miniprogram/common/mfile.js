@@ -16,13 +16,13 @@ function info(i1,i2,i3,i4,isLog=false) {
     try {
         if (mlog.info == null||isLog) {
             console.info("mfile",i1,i2,i3,i4)
-            mlog.showToast("mfile:"+mlog.getMsg(i1,i2,i3,i4))
+            mlog.static_showToast("mfile:"+mlog.static_getMsg(i1,i2,i3,i4))
         } else {
             mlog.info("mfile", i1, i2, i3, i4)
         }
     } catch (e) {
         console.error("mfile",e)
-        mlog.showModal("mfile:"+mlog.getMsg(e))
+        mlog.static_showModal("mfile:"+mlog.static_getMsg(e))
     }
 }
 
@@ -30,15 +30,15 @@ function err(e1, e2, e3,e4,isLog=false) {
     try {
         if (mlog.err == null||isLog) {
             console.error("mfile",e1, e2, e3,e4)
-            mlog.showModal("mfile:"+mlog.getMsg(e1, e2, e3,e4))
+            mlog.static_showModal("mfile:"+mlog.static_getMsg(e1, e2, e3,e4))
         } else mlog.err("mfile", e1,e2,e3,e4)
     } catch (e) {
         console.error("mfile",e)
-        mlog.showModal("mfile:"+mlog.getMsg(e))
+        mlog.static_showModal("mfile:"+mlog.static_getMsg(e))
     }
 }
 
-module.exports.init1 = (c_mlog) => {
+module.exports.static_init = (c_mlog) => {
     try {
         if (c_mlog != null) {
             mlog = c_mlog
@@ -391,15 +391,15 @@ function initPath(path){
 module.exports.getUserDir = () => {
     return USER_DIR + "/"
 }
-module.exports.mkDir = mkDir
-module.exports.readDir = readDir
-module.exports.readFile = readFile
-module.exports.writeFile = writeFile
-module.exports.getFInfo = getFInfo
-module.exports.isExist = isExist
-module.exports.isDir = isDir
-module.exports.rmPath = removePath
-module.exports.downUrlFileSync = downUrlFileSync
-module.exports.copyFile = copyFile
-module.exports.copyDir = copyDir
-module.exports.unzipSync = unzipSync
+module.exports.static_mkDir = mkDir
+module.exports.static_readDir = readDir
+module.exports.static_readFile = readFile
+module.exports.static_writeFile = writeFile
+module.exports.static_getFInfo = getFInfo
+module.exports.static_isExist = isExist
+module.exports.static_isDir = isDir
+module.exports.static_rmPath = removePath
+module.exports.static_downUrlFileSync = downUrlFileSync
+module.exports.static_copyFile = copyFile
+module.exports.static_copyDir = copyDir
+module.exports.static_unzipSync = unzipSync
