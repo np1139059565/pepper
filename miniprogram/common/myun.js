@@ -82,6 +82,7 @@ function runEvent(eventName, data, callback) {
         }
     }
     try {
+        info("runEvent",eventName,data)
         wx.cloud.callFunction({
             name: eventName,//云函数名 对应 ../appname/cloudfunctions/*
             data: data,//合并入云函数的event 如果包含大数据字段（建议临界值 256KB）建议使用 wx.cloud.CDN 标记大数据字段
@@ -95,14 +96,6 @@ function runEvent(eventName, data, callback) {
                     var code = r.errMsg.endsWith(":ok")
                     if (!code) {
                         err(r.errMsg)
-                    }else if(eventName=="yun_hand_db"){
-                        //database res
-                        if(code&&null!=r.result.code&&!r.result.code){
-                            code=false
-                            err("database err",r.result.errMsg)
-                        }else{
-                            r=r.result.data
-                        }
                     }
                     mcallback(code, r)
                 } catch (e) {

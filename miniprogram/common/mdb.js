@@ -63,9 +63,21 @@ const DB_QUERY_TYPE={
 }
 function query(tableName,callback){
     try{
+        info("query",tableName)
         myun.runEventSync("yun_hand_db",{
             geo:{[DB_GEO_TYPE.WHERE]:{_id:tableName}},
-            queryType:DB_QUERY_TYPE.GET},callback)
+            queryType:DB_QUERY_TYPE.GET},(code,r)=>{
+            //database res
+            if(code){
+                if(null!=r.result.code&&!r.result.code){
+                    code=false
+                    err("database err",r.result.errMsg)
+                }else{
+                    r=r.result.data
+                }
+            }
+            callback(code,r)
+        })
     }catch (e){
         err(e)
     }
