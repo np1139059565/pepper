@@ -17,7 +17,7 @@ function info(i1,i2,i3,i4,i5) {
 function err(e1, e2, e3, e4, e5) {
     writeLog("mlog err",getMsg(e1)+","+getMsg(e2)+","+getMsg(e3)+","+ getMsg(e4)+","+ getMsg(e5))
     showModal("mlog err:",getMsg(e1)+","+getMsg(e2)+","+getMsg(e3)+","+ getMsg(e4)+","+ getMsg(e5))
-    console.error("mlog err",getMsg(e1),getMsg(e2),getMsg(e3),getMsg(e4),getMsg(e5)) 
+    console.error("mlog err",getMsg(e1),getMsg(e2),getMsg(e3),getMsg(e4),getMsg(e5))
 }
 function getMsg(e) {
     try {
@@ -69,7 +69,7 @@ function showModal(title,content, ocallback, ccallback) {
 function writeLog(title,conter){
     const tdate=new Date().toJSON()
 
-    mfile.writeFile("mlog/"+tdate.split(" ")[0]+".mlog",
+    mfile.writeFile("mlog/"+tdate.split("T")[0]+".mlog",
         tdate+" "+title+":\r\n"+conter+"\r\n", true,null,true)
 }
 module.exports.showToast=showToast
