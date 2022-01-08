@@ -15,22 +15,26 @@ var mlog = require("mlog.js")
 function info(i1,i2,i3,i4,isLog=false) {
     try {
         if (mlog.info == null||isLog) {
+            console.info("mfile",i1,i2,i3,i4)
             mlog.showToast("mfile:"+mlog.getMsg(i1,i2,i3,i4))
         } else {
             mlog.info("mfile", i1, i2, i3, i4)
         }
     } catch (e) {
-        console.error(e)
+        console.error("mfile",e)
+        mlog.showModal("mfile:"+mlog.getMsg(e))
     }
 }
 
 function err(e1, e2, e3,e4,isLog=false) {
     try {
         if (mlog.err == null||isLog) {
+            console.error("mfile",e1, e2, e3,e4)
             mlog.showModal("mfile:"+mlog.getMsg(e1, e2, e3,e4))
         } else mlog.err("mfile", e1,e2,e3,e4)
     } catch (e) {
-        console.error(e)
+        console.error("mfile",e)
+        mlog.showModal("mfile:"+mlog.getMsg(e))
     }
 }
 
