@@ -375,7 +375,7 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
 function initPath(path){
     if(typeof path=="string"){
         //check is absolute path
-        path=(path.startsWith("/")?"":getUserDir())+path
+        path=(path.startsWith("/")?"":USER_DIR + "/")+path
         //check parent path
         const ppath = path.substr(0, path.lastIndexOf("/"))
         if (isDir(ppath) == false) {
