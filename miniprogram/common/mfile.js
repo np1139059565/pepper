@@ -90,11 +90,8 @@ function readFile(filePath, encoding) {
  */
 function writeFile(filePath, conter, isAppend, encoding,isLog=false) {
     try {
-        //check path
-        const ppath = filePath.substr(0, filePath.lastIndexOf("/"))
-        if (isDir(ppath) == false) {
-            mkDir(ppath,isLog)
-        }
+        //init path
+        filePath=initPath(filePath)
         //encode
         encoding = (encoding != null ? encoding : "utf8")
         //append
@@ -305,10 +302,7 @@ function downUrlFileSync(url, localPath, callback, isShowLoading) {
                 const code = res.statusCode === 200
                 if (code) {
                     //copy cache to local
-                    const parentPath = localPath.substr(0, localPath.lastIndexOf("/"))
-                    if (isDir(parentPath) == false) {
-                        mkDir(parentPath)
-                    }
+                    localPath=initPath(localPath)
                     info("download url file is "+code, url, res)
                     mcallback(copyFile(res.tempFilePath, localPath))
                 } else {
@@ -340,10 +334,7 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
             })
         }
         //check dst path
-        const ppath = dstPath.substr(0, dstPath.lastIndexOf("/"))
-        if (isDir(ppath) == false) {
-            mkDir(ppath)
-        }
+        dstPath=initPath(dstPath)
         if (false == dstPath.endsWith("/")) {
             dstPath += "/"
         }
@@ -379,6 +370,19 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
     } catch (e) {
         err(e)
     }
+}
+
+function initPath(path){
+    if(typeof path=="string"){
+        //check is absolute path
+        path=(path.startsWith("/")?"":getUserDir())+path
+        //check parent path
+        const ppath = path.substr(0, path.lastIndexOf("/"))
+        if (isDir(ppath) == false) {
+            mkDir(ppath)
+        }
+        return path
+    }else return null
 }
 
 // ------------------open event----------------------
