@@ -96,7 +96,7 @@ function showModal(title, content, ocallback, ccallback) {
 function writeLog(title, conter) {
     const tdate = new Date().toJSON()
 
-    mfile.writeFile("mlog/" + tdate.split("T")[0] + ".mlog",
+    mfile.static_writeFile("mlog/" + tdate.split("T")[0] + ".mlog",
         tdate + " " + title + ":\r\n" + conter + "\r\n", true, null, true)
 }
 
