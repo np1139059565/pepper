@@ -1,4 +1,9 @@
-var mlog = require("mlog.js"),myun=null
+const LOCAL_DB_PATH="db_pepper/"
+const TABLE_NAME={
+    KEY_LIST:"tb_key",
+    COUNT_DAY:"tb_count_d"
+}
+var mlog = require("mlog.js"),myun=null,mfile=null
 
 /**
  *
@@ -34,7 +39,7 @@ function err(e1, e2, e3,e4,isLog=false) {
     }
 }
 
-module.exports.static_init = (c_mlog,c_myun) => {
+module.exports.static_init = (c_mlog,c_myun,c_mfile,callback) => {
     try {
         if (c_mlog != null) {
             mlog = c_mlog
@@ -43,31 +48,48 @@ module.exports.static_init = (c_mlog,c_myun) => {
 
         if (c_myun != null) {
             myun = c_myun
-            module.exports.querySync=query
         }
+        if (c_mfile != null) {
+            mfile = c_mfile
+        }
+        //refush local db
+        if(true){
+            info("init local table..")
+            initLocalTable(callback)
+        }
+        module.exports.query=queryLocal
     } catch (e) {
         err(e)
     }
 }
-module.exports.DB_TABLE_NAME=()=>{
-    return DB_TABLE_NAME
+module.exports.TABLE_NAME=()=>{
+    return TABLE_NAME
 }
-const DB_TABLE_NAME={
-    KEY_LIST:"tb_key",
-    COUNT_DAY:"tb_count_d"
+
+function initLocalTable(callback){
+    var count=0
+    Object.values(TABLE_NAME).map(tableName=>{
+        count+=1//count++
+        queryYunTable(tableName,(code,r)=>{
+            //write local table
+            mfile.static_writeFile(LOCAL_DB_PATH+tableName,JSON.stringify(r))
+            //check is end
+            count-=1
+            if(count<=0&&typeof callback=="function"){
+                callback()
+            }
+        })
+    })
 }
-const DB_GEO_TYPE={
-    WHERE:"where"
+function queryLocal(tableName){
+    return mfile.static_readFile(LOCAL_DB_PATH+tableName)
 }
-const DB_QUERY_TYPE={
-    GET:"get"
-}
-function query(tableName,callback){
+function queryYunTable(tableName,callback){
     try{
         info("query",tableName)
         myun.runEventSync("yun_hand_db",{
-            geo:{[DB_GEO_TYPE.WHERE]:{_id:tableName}},
-            queryType:DB_QUERY_TYPE.GET},(code,r)=>{
+            geo:{"where":{"_id":tableName}},
+            queryType:"get"},(code,r)=>{
             //database res
             if(code){
                 if(null!=r.result.code&&!r.result.code){

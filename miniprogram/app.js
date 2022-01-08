@@ -17,10 +17,8 @@ App({
         this.data.c_myun=require("common/myun.js")
         this.data.c_myun.static_init(this.data.c_mlog,this.data.c_mfile)
         this.data.c_mdb=require("common/mdb.js")
-        this.data.c_mdb.static_init(this.data.c_mlog,this.data.c_myun)
-        this.data.c_mdb.querySync(this.data.c_mdb.DB_TABLE_NAME().COUNT_DAY,(c,r)=>{
-          console.info(c,r)
-        })
+        this.data.c_mdb.static_init(this.data.c_mlog,this.data.c_myun,this.data.c_mfile)
+
       }catch (e1){
         this.data.c_mlog.err(e1)
       }
