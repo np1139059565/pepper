@@ -2,7 +2,7 @@ const USER_DIR = wx.env.USER_DATA_PATH//wxfile://usr
 
 const FSM = wx.getFileSystemManager()
 
-var mlog = require("common/mlog.js")
+var mlog = require("mlog.js")
 function info(i1,i2,i3,i4) {
     try {
         if (mlog.info == null) {

@@ -1,4 +1,4 @@
-const mfile=require("common/mfile.js")
+const mfile=require("mfile.js")
 
 module.exports.init1 = function (){
     try {
