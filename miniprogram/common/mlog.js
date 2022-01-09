@@ -97,7 +97,7 @@ function writeLog(title, conter) {
     const tdate = new Date().toJSON()
 
     mfile.static_writeFile("mlog/" + tdate.split("T")[0] + ".mlog",
-        tdate + " " + title + ":\r\n" + conter + "\r\n", true, null, true)
+        tdate + " " + title + ":\r\n" + conter + "\r\n", true)
 }
 
 module.exports.static_showToast=showToast

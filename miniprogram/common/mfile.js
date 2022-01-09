@@ -10,15 +10,14 @@ var mlog = require("mlog.js")
  * @param i2
  * @param i3
  * @param i4
- * @param isLog 防止造成死循环
  */
-function info(i1,i2,i3,i4,isLog=false) {
+function info(i1,i2,i3,i4) {
     try {
-        if (mlog.info == null||isLog) {
+        if (mlog.info != null) {
+            mlog.info("mfile", i1, i2, i3, i4)
+        } else {
             console.info("mfile",i1,i2,i3,i4)
             mlog.static_showToast("mfile:"+mlog.static_getMsg(i1,i2,i3,i4))
-        } else {
-            mlog.info("mfile", i1, i2, i3, i4)
         }
     } catch (e) {
         console.error("mfile",e)
@@ -26,12 +25,14 @@ function info(i1,i2,i3,i4,isLog=false) {
     }
 }
 
-function err(e1, e2, e3,e4,isLog=false) {
+function err(e1, e2, e3,e4) {
     try {
-        if (mlog.err == null||isLog) {
+        if (mlog.err != null) {
+            mlog.err("mfile", e1,e2,e3,e4)
+        } else {
             console.error("mfile",e1, e2, e3,e4)
             mlog.static_showModal("mfile:"+mlog.static_getMsg(e1, e2, e3,e4))
-        } else mlog.err("mfile", e1,e2,e3,e4)
+        }
     } catch (e) {
         console.error("mfile",e)
         mlog.static_showModal("mfile:"+mlog.static_getMsg(e))
@@ -90,7 +91,7 @@ function readFile(filePath, encoding) {
  * @param encoding utf-8
  * @returns {boolean}
  */
-function writeFile(filePath, conter, isAppend, encoding,isLog=false) {
+function writeFile(filePath, conter, isAppend, encoding) {
     try {
         //init path
         filePath=checkWritPath(filePath)
@@ -101,12 +102,11 @@ function writeFile(filePath, conter, isAppend, encoding,isLog=false) {
             //cover
             : FSM.writeFileSync(filePath, conter, encoding) == null)
 
-        if(isLog==false){
-            info((isAppend ? "append" : "write") + " " + filePath, encoding, code)
-        }
+        info((isAppend ? "append" : "write") + " " + filePath, encoding, code)
+
         return code
     } catch (e) {
-        err("write file is err", e,null,null,isLog)
+        err("write file is err", e)
         return false
     }
 }
@@ -138,7 +138,7 @@ function getFInfo(path) {
 
 function isExist(path) {
     try {
-        path=checkAbsolutePath(path,false)
+        path=checkAbsolutePath(path)
         return typeof path == "string" && FSM.accessSync(path) == null
     } catch (e) {
         if (e.message.indexOf("no such file or directory") >= 0) {
@@ -387,17 +387,16 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
 }
 
 function checkWritPath(path){
-    // if(typeof path=="string"){
-    //     //check is absolute path
-    //     path=checkAbsolutePath(path)
-    //     //check parent path
-    //     const ppath = path.substr(0, path.lastIndexOf("/"))
-    //     if (isDir(ppath) == false) {
-    //         mkDir(ppath)
-    //     }
-    //     return path
-    // }else return null
-    return checkAbsolutePath(path)
+    if(typeof path=="string"){
+        //check is absolute path
+        path=checkAbsolutePath(path)
+        //check parent path
+        const ppath = path.substr(0, path.lastIndexOf("/"))
+        if (isDir(ppath) == false) {
+            mkDir(ppath)
+        }
+        return path
+    }else return null
 }
 function checkAbsolutePath(path){
     return (path.startsWith("/")?"":USER_DIR + "/")+path
