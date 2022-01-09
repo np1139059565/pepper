@@ -56,7 +56,7 @@ module.exports.static_init = (c_mlog) => {
  */
 function readDir(dirPath) {
     try {
-        dirPath=initPath(dirPath)
+        dirPath=checkAbsolutePath(dirPath)
         info("read dir", dirPath)
         return isDir(dirPath) ? FSM.readdirSync(dirPath) : []//[p1,p2]
     } catch (e) {
@@ -73,7 +73,7 @@ function readDir(dirPath) {
  */
 function readFile(filePath, encoding) {
     try {
-        filePath=initPath(filePath)
+        filePath=checkAbsolutePath(filePath)
         info("read file", filePath)
         return FSM.readFileSync(filePath, encoding != null ? encoding : "UTF-8")
     } catch (e) {
@@ -93,7 +93,7 @@ function readFile(filePath, encoding) {
 function writeFile(filePath, conter, isAppend, encoding,isLog=false) {
     try {
         //init path
-        filePath=initPath(filePath)
+        filePath=checkWritPath(filePath)
         //encode
         encoding = (encoding != null ? encoding : "utf8")
         //append
@@ -124,7 +124,7 @@ function writeFile(filePath, conter, isAppend, encoding,isLog=false) {
  */
 function getFInfo(path) {
     try {
-        path=initPath(path)
+        path=checkAbsolutePath(path)
         if (isExist(path)) {
             return FSM.statSync(path, false)
         } else {
@@ -138,7 +138,7 @@ function getFInfo(path) {
 
 function isExist(path) {
     try {
-        path=initPath(path,false)
+        path=checkAbsolutePath(path,false)
         return typeof path == "string" && FSM.accessSync(path) == null
     } catch (e) {
         if (e.message.indexOf("no such file or directory") >= 0) {
@@ -162,7 +162,7 @@ function isDir(path) {
 
 function removePath(path) {
     try {
-        path=initPath(path)
+        path=checkAbsolutePath(path)
         const pinfo = getFInfo(path)
         if (pinfo != null) {
             if (pinfo.isDirectory()) {
@@ -205,8 +205,8 @@ function mkDir(dirPath) {
 
 function copyFile(srcFPath, dstFPath) {
     try {
-        srcFPath=initPath(srcFPath)
-        dstFPath=initPath(dstFPath)
+        srcFPath=checkAbsolutePath(srcFPath)
+        dstFPath=checkWritPath(dstFPath)
         const sInfo = getFInfo(srcFPath)
         if (sInfo != null && sInfo.isFile()) {
             const dInfo = getFInfo(dstFPath)
@@ -245,8 +245,8 @@ function copyFile(srcFPath, dstFPath) {
  */
 function copyDir(srcPath, dstPath,upProgressEvent) {
     try{
-        srcPath=initPath(srcPath)
-        dstPath=initPath(dstPath)
+        srcPath=checkAbsolutePath(srcPath)
+        dstPath=checkWritPath(dstPath)
         // check dst path
         if (!dstPath.endsWith("/")) {
             dstPath += "/"
@@ -315,7 +315,7 @@ function downUrlFileSync(url, localPath, callback, isShowLoading) {
                 const code = res.statusCode === 200
                 if (code) {
                     //copy cache to local
-                    localPath=initPath(localPath)
+                    localPath=checkWritPath(localPath)
                     info("download url file is "+code, url, res)
                     mcallback(copyFile(res.tempFilePath, localPath))
                 } else {
@@ -340,8 +340,8 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
         }
     }
     try {
-        zipPath=initPath(zipPath)
-        dstPath=initPath(dstPath)
+        zipPath=checkAbsolutePath(zipPath)
+        dstPath=checkWritPath(dstPath)
         if (isShowLoading) {
             wx.showLoading({
                 title: '解压...',
@@ -349,7 +349,6 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
             })
         }
         //check dst path
-        dstPath=initPath(dstPath)
         if (false == dstPath.endsWith("/")) {
             dstPath += "/"
         }
@@ -387,7 +386,7 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
     }
 }
 
-function initPath(path){
+function checkWritPath(path){
     if(typeof path=="string"){
         //check is absolute path
         path=checkAbsolutePath(path)
