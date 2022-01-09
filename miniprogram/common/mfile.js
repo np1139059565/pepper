@@ -399,7 +399,7 @@ function checkWritPath(path){
     }else return null
 }
 function checkAbsolutePath(path){
-    return (path.startsWith("/")?"":USER_DIR + "/")+path
+    return (path.startsWith(USER_DIR)?"":USER_DIR + "/")+path
 }
 
 // ------------------open event----------------------
