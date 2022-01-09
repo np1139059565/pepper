@@ -53,7 +53,7 @@ module.exports.static_init = (c_mlog,c_myun,c_mfile,callback) => {
             mfile = c_mfile
         }
         //refush local db
-        if(false==mfile.static_isDir(LOCAL_DB_PATH)){
+        if(false==mfile.static_isDir(mfile.getUserDir()+LOCAL_DB_PATH)){
             info("init local table..")
             initLocalTable(callback)
         }
