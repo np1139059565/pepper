@@ -387,16 +387,17 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
 }
 
 function checkWritPath(path){
-    if(typeof path=="string"){
-        //check is absolute path
-        path=checkAbsolutePath(path)
-        //check parent path
-        const ppath = path.substr(0, path.lastIndexOf("/"))
-        if (isDir(ppath) == false) {
-            mkDir(ppath)
-        }
-        return path
-    }else return null
+    // if(typeof path=="string"){
+    //     //check is absolute path
+    //     path=checkAbsolutePath(path)
+    //     //check parent path
+    //     const ppath = path.substr(0, path.lastIndexOf("/"))
+    //     if (isDir(ppath) == false) {
+    //         mkDir(ppath)
+    //     }
+    //     return path
+    // }else return null
+    return checkAbsolutePath(path)
 }
 function checkAbsolutePath(path){
     return (path.startsWith("/")?"":USER_DIR + "/")+path
