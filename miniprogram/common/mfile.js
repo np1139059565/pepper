@@ -152,6 +152,7 @@ function isExist(path) {
 
 function isDir(path) {
     try {
+        path=checkAbsolutePath(path)
         const pinfo = getFInfo(path)
         return pinfo != null && pinfo.isDirectory()
     } catch (e) {
@@ -182,6 +183,7 @@ function removePath(path) {
 
 function mkDir(dirPath) {
     try {
+        dirPath=checkAbsolutePath(dirPath)
         const dinfo = getFInfo(dirPath)
         if (dinfo != null) {
             if (dinfo.isFile()) {
@@ -388,7 +390,7 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
 function initPath(path){
     if(typeof path=="string"){
         //check is absolute path
-        path=(path.startsWith("/")?"":USER_DIR + "/")+path
+        path=checkAbsolutePath(path)
         //check parent path
         const ppath = path.substr(0, path.lastIndexOf("/"))
         if (isDir(ppath) == false) {
@@ -396,6 +398,9 @@ function initPath(path){
         }
         return path
     }else return null
+}
+function checkAbsolutePath(path){
+    return (path.startsWith("/")?"":USER_DIR + "/")+path
 }
 
 // ------------------open event----------------------
