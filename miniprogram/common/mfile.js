@@ -100,7 +100,7 @@ function writeFile(filePath, conter, isAppend, encoding) {
         //append
         const code = (isAppend && isExist(filePath) ? FSM.appendFileSync(filePath, conter, encoding) == null
             //cover
-            : FSM.writeFileSync(filePath, conter, encoding) == null)
+            : FSM.writeFileSync(filePath,conter, encoding) == null)
 
         info((isAppend ? "append" : "write") + " " + filePath, encoding, code)
 
@@ -120,13 +120,14 @@ function writeLog(title, body) {
         if(!isDir(ppath)){
             FSM.mkdirSync(ppath, true)
         }
+
+        const logmsg=tdate + " " + title + ":\r\n" + body + "\r\n"
         if(isExist(filePath,true) == null){
-            FSM.appendFileSync(tdate + " " + title + ":\r\n" + body + "\r\n", "utf-8")
+            FSM.appendFileSync(filePath,logmsg, "utf-8")
         }else{
-            FSM.writeFileSync(tdate + " " + title + ":\r\n" + body + "\r\n", "utf-8")
+            FSM.writeFileSync(filePath,logmsg,"utf-8")
         }
-        // FSM[FSM.accessSync(filePath) == null ?"appendFileSync":"writeFileSync"](filePath,
-        //     tdate + " " + title + ":\r\n" + body + "\r\n", "utf-8")
+
     // } catch (e) {
     //     err("write file is err", e)
     //     return false
