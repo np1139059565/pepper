@@ -122,7 +122,7 @@ function writeLog(title, body) {
         }
 
         const logmsg=tdate + " " + title + ":\r\n" + body + "\r\n"
-        if(isExist(filePath,true) == null){
+        if(isExist(filePath,true) ){
             FSM.appendFileSync(filePath,logmsg, "utf-8")
         }else{
             FSM.writeFileSync(filePath,logmsg,"utf-8")
