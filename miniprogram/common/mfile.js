@@ -114,12 +114,12 @@ function writeFile(filePath, conter, isAppend, encoding) {
 function writeLog(title, body) {
     // try {
         const tdate = new Date().toJSON()
-        const logStr=tdate + " " + title + ":\r\n" + body + "\r\n"
         const filePath=checkAbsolutePath("mlog/" + tdate.split("T")[0] + ".mlog",true)
         //check parent path
-        const ppath = logStr.substr(0, logStr.lastIndexOf("/"))
+        const ppath = filePath.substr(0, filePath.lastIndexOf("/"))
         FSM.mkdirSync(ppath, true)
-        FSM[FSM.accessSync(filePath) == null ?"appendFileSync":"writeFileSync"](filePath, logStr, "utf-8")
+        FSM[FSM.accessSync(filePath) == null ?"appendFileSync":"writeFileSync"](filePath,
+            tdate + " " + title + ":\r\n" + body + "\r\n", "utf-8")
     // } catch (e) {
     //     err("write file is err", e)
     //     return false
