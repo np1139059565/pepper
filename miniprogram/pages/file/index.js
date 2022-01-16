@@ -68,12 +68,12 @@ Page({
         }
     },
     saveFile:function (){
-        try { 
+        try {
             const editFilePath=this.data.absolutePath+this.data.editFileName
             if(app.data.c_mfile.static_isExist(editFilePath)){
                 app.data.c_mlog.static_showModal("保存?",()=>{
                     const wcode=app.data.c_mfile.static_writeFile(editFilePath,this.data.editConter.replaceAll(" "," "))
-                    pp.data.c_mlog.static_showModal("保存文件结果："+wcode)
+                    app.data.c_mlog.static_showModal("保存文件结果："+wcode)
                 },()=>{
                     //刷新文件内容
                     // this.editFile()
@@ -130,7 +130,7 @@ Page({
                                 this.editFile()
                             }
                             if (stat.size > 1024) {
-                                app.showModal("文件过大，任然打开?", callback, () => {})
+                                app.data.c_mlog.static_showModal("文件过大，任然打开?", callback, () => {})
                             } else callback()
                         }
                     }
@@ -143,7 +143,7 @@ Page({
     removeChild: function (e) {
         try {
             const fPath = this.data.absolutePath + e.currentTarget.dataset.event1Data1
-            app.showModal("确定删除 " + fPath + "?", () => {
+            app.data.c_mlog.static_showModal("确定删除 " + fPath + "?", () => {
                 if (app.data.c_mfile.static_rmPath(fPath)) {
                     this.refushDir()
                 }
