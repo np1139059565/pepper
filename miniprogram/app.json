@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/file/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
