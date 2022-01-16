@@ -71,9 +71,9 @@ Page({
         try {
             const editFilePath=this.data.absolutePath+this.data.editFileName
             if(app.data.c_mfile.static_isExist(editFilePath)){
-                app.showModal("保存?",()=>{
+                app.data.c_mlog.static_showModal("保存?",()=>{
                     const wcode=app.data.c_mfile.static_writeFile(editFilePath,this.data.editConter.replaceAll(" "," "))
-                    app.showModal("保存文件结果："+wcode)
+                    pp.data.c_mlog.static_showModal("保存文件结果："+wcode)
                 },()=>{
                     //刷新文件内容
                     // this.editFile()
