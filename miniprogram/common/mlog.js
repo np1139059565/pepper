@@ -6,7 +6,7 @@ const LOG_TYPES={
 }
 var logType=LOG_TYPES.DEBUG
 
-module.exports.static_init = function (s_logType) {
+module.exports.static_init = function (c_mfile,s_logType) {
     try {
         info("init log...")
         // switch (s_logType.toUpperCase()){
@@ -26,7 +26,7 @@ module.exports.static_init = function (s_logType) {
 }
 
 function info(i1, i2, i3, i4, i5) {
-    writeLog("mlog info", getMsg(i1, i2, i3, i4, i5))
+    mfile.static_writeLog("mlog info", getMsg(i1, i2, i3, i4, i5))
     if(logType==LOG_TYPES.DEBUG){
         showToast(getMsg(i1, i2, i3, i4, i5))
     }
@@ -34,7 +34,7 @@ function info(i1, i2, i3, i4, i5) {
 }
 
 function err(e1, e2, e3, e4, e5) {
-    writeLog("mlog err", getMsg(e1, e2, e3, e4, e5))
+    mfile.static_writeLog("mlog err", getMsg(e1, e2, e3, e4, e5))
     showModal("mlog err:", getMsg(e1, e2, e3, e4, e5))
     console.error("mlog err", getMsg(e1, e2, e3, e4, e5))
 }
@@ -93,12 +93,6 @@ function showModal(title, content, ocallback, ccallback) {
     })
 }
 
-function writeLog(title, conter) {
-    const tdate = new Date().toJSON()
-
-    mfile.static_writeFile("mlog/" + tdate.split("T")[0] + ".mlog",
-        tdate + " " + title + ":\r\n" + conter + "\r\n", true)
-}
 
 module.exports.static_showToast=showToast
 module.exports.static_showModal=showModal

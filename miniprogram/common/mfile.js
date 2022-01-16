@@ -111,6 +111,21 @@ function writeFile(filePath, conter, isAppend, encoding) {
     }
 }
 
+function writeLog(title, body) {
+    // try {
+        const tdate = new Date().toJSON()
+        const logStr=tdate + " " + title + ":\r\n" + body + "\r\n"
+        const filePath=checkAbsolutePath("mlog/" + tdate.split("T")[0] + ".mlog",true)
+        //check parent path
+        const ppath = logStr.substr(0, logStr.lastIndexOf("/"))
+        FSM.mkdirSync(ppath, true)
+        FSM[FSM.accessSync(filePath) == null ?"appendFileSync":"writeFileSync"](filePath, logStr, "utf-8")
+    // } catch (e) {
+    //     err("write file is err", e)
+    //     return false
+    // }
+}
+
 /**
  *
  * @param path
@@ -206,22 +221,20 @@ function mkDir(dirPath) {
 function copyFile(srcFPath, dstFPath) {
     try {
         srcFPath=checkAbsolutePath(srcFPath)
-        dstFPath=checkWritPath(dstFPath)
-        const sInfo = getFInfo(srcFPath)
-        if (sInfo != null && sInfo.isFile()) {
-            const dInfo = getFInfo(dstFPath)
-            //check dst path
+        const srcFileInfo = getFInfo(srcFPath)
+        //check src file is find
+        if (srcFileInfo != null && srcFileInfo.isFile()) {
             if (dstFPath.endsWith("/")) {
                 dstFPath = dstFPath.substr(0, dstFPath.length - 1)
             }
-            if (dInfo != null) {
-                if (dInfo.isDirectory()) {
-                    err("dst path is dir", dstFPath)
-                    return false
-                }
-            } else {
-                mkDir(dstFPath.split("/").reverse().splice(1).reverse().join("/"))
+            //check dst path
+            dstFPath=checkWritPath(dstFPath)
+            const dstFileInfo = getFInfo(dstFPath)
+            if (dstFileInfo != null&&dstFileInfo.isDirectory()) {
+                err("dst path is dir", dstFPath)
+                return false
             }
+            //copy file
             const code = FSM.copyFileSync(srcFPath, dstFPath) == null
             info("copy file " + srcFPath, dstFPath, code)
             if(!code){
@@ -387,34 +400,43 @@ function unzipSync(zipPath, dstPath, callback, isShowLoading) {
 }
 
 function checkWritPath(path){
-    if(typeof path=="string"){
-        //check is absolute path
-        path=checkAbsolutePath(path)
-        //check parent path
-        const ppath = path.substr(0, path.lastIndexOf("/"))
-        if (isDir(ppath) == false) {
-            mkDir(ppath)
-        }
-        return path
-    }else return null
+    try{
+        if(typeof path=="string"){
+            //check is absolute path
+            path=checkAbsolutePath(path)
+            //check parent path
+            const ppath = path.substr(0, path.lastIndexOf("/"))
+            if (isDir(ppath) == false) {
+                mkDir(ppath)
+            }
+            return path
+        }else return null
+    }catch (e){
+        err(e)
+        return null
+    }
 }
 function checkAbsolutePath(path){
     return (path.startsWith(USER_DIR)?"":USER_DIR + "/")+path
 }
 
 // ------------------open event----------------------
-module.exports.getUserDir = () => {
-    return USER_DIR + "/"
-}
 module.exports.static_mkDir = mkDir
-module.exports.static_readDir = readDir
-module.exports.static_readFile = readFile
-module.exports.static_writeFile = writeFile
-module.exports.static_getFInfo = getFInfo
-module.exports.static_isExist = isExist
-module.exports.static_isDir = isDir
-module.exports.static_rmPath = removePath
+module.exports.static_unzipSync = unzipSync
 module.exports.static_downUrlFileSync = downUrlFileSync
 module.exports.static_copyFile = copyFile
 module.exports.static_copyDir = copyDir
-module.exports.static_unzipSync = unzipSync
+
+module.exports.static_rmPath = removePath
+
+module.exports.static_writeFile = writeFile
+module.exports.static_writeLog = writeLog
+
+module.exports.static_getUserDir = () => {
+    return USER_DIR + "/"
+}
+module.exports.static_readDir = readDir
+module.exports.static_readFile = readFile
+module.exports.static_getFInfo = getFInfo
+module.exports.static_isExist = isExist
+module.exports.static_isDir = isDir
