@@ -117,7 +117,9 @@ function writeLog(title, body) {
         const filePath=checkAbsolutePath("mlog/" + tdate.split("T")[0] + ".mlog",true)
         //check parent path
         const ppath = filePath.substr(0, filePath.lastIndexOf("/"))
-        FSM.mkdirSync(ppath, true)
+        if(!isDir(ppath)){
+            FSM.mkdirSync(ppath, true)
+        }
         FSM[FSM.accessSync(filePath) == null ?"appendFileSync":"writeFileSync"](filePath,
             tdate + " " + title + ":\r\n" + body + "\r\n", "utf-8")
     // } catch (e) {
@@ -172,6 +174,7 @@ function isDir(path) {
         return pinfo != null && pinfo.isDirectory()
     } catch (e) {
         err("check is dir err", e)
+        return false
     }
 }
 
