@@ -132,10 +132,10 @@ function downloadFile(yunPath,localPath,callback){
                         info("down yun file",res.tempFilePath)
                         //copy cache to local
                         const parentPath = localPath.substr(0, localPath.lastIndexOf("/"))
-                        if (mfile.isDir(parentPath)== false){
-                            mfile.mkDir(parentPath)
+                        if (mfile.static_isDir(parentPath)== false){
+                            mfile.static_mkDir(parentPath)
                         }
-                        const ccode = mfile.copyFile(res.tempFilePath, localPath)
+                        const ccode = mfile.static_copyFile(res.tempFilePath, localPath)
                         mcallback(ccode)
                     }else{
                         err("download yun file to cache is err.",yunPath)
