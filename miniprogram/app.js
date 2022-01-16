@@ -6,6 +6,35 @@ App({
     c_myun:null,
     c_mdb:null
   },
+  showModal:(title, content, ocallback, ccallback)=> {
+  try{
+    //ok,cancel
+    wx.showModal({
+      // title: conter,//titile 无换行
+      content: content,
+      showCancel: typeof ccallback == "function",
+      confirmText: "确认",
+      cancelText: "取消",
+      success: (res) => {
+        try {
+          if (res.confirm) {
+            if (typeof ocallback == "function") {
+              ocallback()
+            }
+          } else if (res.cancel) {
+            if (typeof ccallback == "function") {
+              ccallback()
+            }
+          }
+        } catch (e) {
+          this.data.c_mlog.err(e)
+        }
+      }
+    })
+  }catch (e){
+    this.data.c_mlog.err(e)
+  }
+},
   onLaunch: function () {
     //init log
     try{
