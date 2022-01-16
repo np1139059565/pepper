@@ -68,7 +68,7 @@ Page({
         }
     },
     saveFile:function (){
-        try {
+        try { 
             const editFilePath=this.data.absolutePath+this.data.editFileName
             if(app.data.c_mfile.static_isExist(editFilePath)){
                 app.data.c_mlog.static_showModal("保存?",()=>{
