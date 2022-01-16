@@ -120,7 +120,7 @@ function writeLog(title, body) {
         if(!isDir(ppath)){
             FSM.mkdirSync(ppath, true)
         }
-        if(FSM.accessSync(filePath) == null){
+        if(isExist(filePath,true) == null){
             FSM.appendFileSync(tdate + " " + title + ":\r\n" + body + "\r\n", "utf-8")
         }else{
             FSM.writeFileSync(tdate + " " + title + ":\r\n" + body + "\r\n", "utf-8")
@@ -158,15 +158,17 @@ function getFInfo(path) {
     }
 }
 
-function isExist(path) {
+function isExist(path,isLog) {
     try {
         path=checkAbsolutePath(path)
         return typeof path == "string" && FSM.accessSync(path) == null
     } catch (e) {
-        if (e.message.indexOf("no such file or directory") >= 0) {
-            info(path, e.message)
-        } else {
-            err(e)
+        if(!isLog){
+            if (e.message.indexOf("no such file or directory") >= 0) {
+                info(path, e.message)
+            } else {
+                err(e)
+            }
         }
         return false
     }
