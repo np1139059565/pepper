@@ -28,7 +28,7 @@ Page({
     },
     refushDir: function () {
         try {
-            this.data.childArr = app.data.c_mlog.readDir(this.data.absolutePath).map(childName => {
+            this.data.childArr = app.data.c_mfile.static_readDir(this.data.absolutePath).map(childName => {
                 var childInfo = "permission"
                 const stat = app.data.c_mfile.static_getFInfo(this.data.absolutePath  + childName)
                 if(stat!=null){
