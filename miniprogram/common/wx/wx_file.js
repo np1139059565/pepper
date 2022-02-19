@@ -98,7 +98,7 @@ const f_is_dir=(path) =>{
         const file_stat=f_get_stat(path)
         return file_stat!=null&&file_stat.f_is_directory()
     }catch(e){
-        f_err(e)
+        console.error(e)
         return false
     }
 }
