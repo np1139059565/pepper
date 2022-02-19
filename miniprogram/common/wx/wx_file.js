@@ -96,9 +96,9 @@ const f_mkdir = (path) => FSM.mkdirSync(path, true) == null
 const f_is_dir=(path) =>{
     try{
         const file_stat=f_get_stat(path)
-        return file_stat!=null&&file_stat.f_is_directory()
+        return file_stat!=null&&file_stat.isdirectory()
     }catch(e){
-        console.error(e)
+        f_err(e)
         return false
     }
 }
@@ -110,7 +110,7 @@ const f_is_dir=(path) =>{
  * .size:
  * .lastAccessedTime:
  * .lastModifiedTime:
- * .f_is_directory() 判断当前文件是否一个目录
+ * .isdirectory() 判断当前文件是否一个目录
  * .isFile() 判断当前文件是否一个文件
  */
  const f_get_stat=(path)=>{
@@ -245,7 +245,7 @@ function f_remove_path(path) {
         path = f_to_absolute_path(path)
         const pinfo = f_get_stat(path)
         if (pinfo != null) {
-            if (pinfo.f_is_directory()) {
+            if (pinfo.isdirectory()) {
                 f_info("rm dir:" + path)
                 return FSM.rmdirSync(path, true) == null
             } else {
@@ -276,7 +276,7 @@ function copyFile(srcFPath, dstFPath) {
             //check dst path
             dstFPath = checkWritPath(dstFPath)
             const dstFileInfo = f_get_stat(dstFPath)
-            if (dstFileInfo != null && dstFileInfo.f_is_directory()) {
+            if (dstFileInfo != null && dstFileInfo.isdirectory()) {
                 f_err("dst path is dir", dstFPath)
                 return false
             }
