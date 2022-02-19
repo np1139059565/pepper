@@ -1,6 +1,6 @@
 const YUN_ID="yfwq1-4nvjm"
 const YUN_FILE_ID="cloud://"+YUN_ID+".7966-yfwq1-4nvjm-1302064482/"
-var mfile= require("mfile.js")
+var mfile= require("wx/wx_file.js")
 
 var mlog = require("mlog.js")
 
@@ -10,31 +10,30 @@ var mlog = require("mlog.js")
  * @param i2
  * @param i3
  * @param i4
- * @param isLog 防止造成死循环
  */
-function info(i1,i2,i3,i4,isLog=false) {
+function info(i1,i2,i3,i4) {
     try {
-        if (mlog.info == null||isLog) {
+        if (mlog.info == null) {
             console.info("myun",i1,i2,i3,i4)
-            mlog.static_showToast("myun:"+mlog.static_getMsg(i1,i2,i3,i4))
+            mlog.f_static_show_toast("myun:"+mlog.f_static_get_msg(i1,i2,i3,i4))
         } else {
             mlog.info("myun", i1, i2, i3, i4)
         }
     } catch (e) {
         console.error("myun",e)
-        mlog.static_showModal("myun:"+mlog.static_getMsg(e))
+        mlog.f_static_show_modal("myun:"+mlog.f_static_get_msg(e))
     }
 }
 
-function err(e1, e2, e3,e4,isLog=false) {
+function err(e1, e2, e3,e4) {
     try {
-        if (mlog.err == null||isLog) {
+        if (mlog.err == null) {
             console.error("myun",e1, e2, e3,e4)
-            mlog.static_showModal("myun:"+mlog.static_getMsg(e1, e2, e3,e4))
+            mlog.f_static_show_modal("myun:"+mlog.f_static_get_msg(e1, e2, e3,e4))
         } else mlog.err("myun", e1,e2,e3,e4)
     } catch (e) {
         console.error("myun",e)
-        mlog.static_showModal("myun:"+mlog.static_getMsg(e))
+        mlog.f_static_show_modal("myun:"+mlog.f_static_get_msg(e))
     }
 }
 
@@ -132,10 +131,10 @@ function downloadFile(yunPath,localPath,callback){
                         info("down yun file",res.tempFilePath)
                         //copy cache to local
                         const parentPath = localPath.substr(0, localPath.lastIndexOf("/"))
-                        if (mfile.static_isDir(parentPath)== false){
-                            mfile.static_mkDir(parentPath)
+                        if (mfile.f_static_isDir(parentPath)== false){
+                            mfile.f_static_mkDir(parentPath)
                         }
-                        const ccode = mfile.static_copyFile(res.tempFilePath, localPath)
+                        const ccode = mfile.f_static_copyFile(res.tempFilePath, localPath)
                         mcallback(ccode)
                     }else{
                         err("download yun file to cache is err.",yunPath)
