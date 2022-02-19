@@ -56,7 +56,7 @@ function f_write_log(line_str) {
         const log_path = f_to_absolute_path("MODULE_MLOG/" + tdate.split("T")[0] + ".MODULE_MLOG")
         //parent path
         const parent_path = log_path.substr(0, log_path.lastIndexOf("/"))
-        if (f_is_dir(parent_path) || f_mkdir(parent_path)) {
+        if (f_is_exist(parent_path)&&f_is_dir(parent_path) || f_mkdir(parent_path)) {
             const msg = tdate + " " + line_str
             if (f_is_exist(log_path, true)) {
                 FSM.appendFileSync(log_path, msg, "utf-8")
@@ -93,7 +93,15 @@ const f_mkdir = (path) => FSM.mkdirSync(path, true) == null
  * @param {*} path 
  * @returns 
  */
-const f_is_dir=(path) =>f_get_stat(path).f_is_directory()
+const f_is_dir=(path) =>{
+    try{
+        const file_stat=f_get_stat(path)
+        return file_stat!=null&&file_stat.f_is_directory()
+    }catch(e){
+        f_err(e)
+        return false
+    }
+}
 /**
  *
  * @param path
@@ -105,7 +113,16 @@ const f_is_dir=(path) =>f_get_stat(path).f_is_directory()
  * .f_is_directory() 判断当前文件是否一个目录
  * .isFile() 判断当前文件是否一个文件
  */
- const f_get_stat=(path)=>FSM.statSync(f_to_absolute_path(path), false)
+ const f_get_stat=(path)=>{
+     try{
+         if(f_is_exist(path)){
+             return FSM.statSync(f_to_absolute_path(path), false)
+         }else return null
+     }catch(e){
+         f_err(e)
+         return null
+     }
+ }
 
 
 
