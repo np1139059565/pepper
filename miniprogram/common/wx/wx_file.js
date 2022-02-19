@@ -56,7 +56,7 @@ function f_write_log(line_str) {
         const log_path = f_to_absolute_path("MODULE_MLOG/" + tdate.split("T")[0] + ".MODULE_MLOG")
         //parent path
         const parent_path = log_path.substr(0, log_path.lastIndexOf("/"))
-        if (f_is_exist(parent_path)&&f_is_dir(parent_path) || f_mkdir(parent_path)) {
+        if (f_is_dir(parent_path) || f_mkdir(parent_path)) {
             const msg = tdate + " " + line_str
             if (f_is_exist(log_path, true)) {
                 FSM.appendFileSync(log_path, msg, "utf-8")
