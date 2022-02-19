@@ -58,7 +58,7 @@ function f_write_log(line_str) {
         const parent_path = log_path.substr(0, log_path.lastIndexOf("/"))
         if (f_is_dir(parent_path) || f_mkdir(parent_path)) {
             const msg = tdate + " " + line_str
-            if (f_is_exist(log_path, true)) {
+            if (f_is_exist(log_path)) {
                 FSM.appendFileSync(log_path, msg, "utf-8")
             } else {
                 FSM.writeFileSync(log_path, msg, "utf-8")
@@ -80,7 +80,17 @@ const f_to_absolute_path = (path) => (path.startsWith(USER_DIR) ? "" : USER_DIR 
  * @param {*} path 
  * @returns 
  */
-const f_is_exist = (path) => FSM.accessSync(path) == null
+const f_is_exist = (path) => {
+    try{
+        return FSM.accessSync(path) == null
+    }catch(e){
+        //垃圾api如果文件不存在则会报错，所以必须用try包着
+        if (e.message.indexOf("no such file or directory")==-1) {
+            f_err(e)
+        }
+        return false
+    }
+}
 /**
  * 
  * @param {*} path 
