@@ -1,7 +1,7 @@
 //wxfile://usr
 const USER_DIR = wx.env.USER_DATA_PATH,
-      FSM = wx.getFileSystemManager(),
-      MODULE_MLOG = require("mlog.js")
+    FSM = wx.getFileSystemManager(),
+    MODULE_MLOG = require("mlog.js")
 
 
 module.exports.f_static_write_log = f_write_log
@@ -16,8 +16,8 @@ module.exports.f_static_rmpath = f_remove_path
 
 module.exports.f_static_writeFile = writeFile
 
-module.exports.f_static_get_user_dir = (dir="") => {
-    return USER_DIR + "/"+dir+(dir.endsWith("/")?"":"/")
+module.exports.f_static_get_user_dir = (dir = "") => {
+    return USER_DIR + "/" + dir + (dir.endsWith("/") ? "" : "/")
 }
 module.exports.f_static_readdir = f_readdir
 module.exports.f_static_readfile = f_readfile
@@ -33,8 +33,8 @@ module.exports.f_static_f_is_dir = f_is_dir
  * @param i3
  * @param i4
  */
- const f_info=(i1, i2, i3, i4)=>MODULE_MLOG.f_info(i1,i2,i3,i4)
- 
+const f_info = (i1, i2, i3, i4) => MODULE_MLOG.f_info(i1, i2, i3, i4)
+
 /**
  * 
  * @param {*} e1 
@@ -43,7 +43,7 @@ module.exports.f_static_f_is_dir = f_is_dir
  * @param {*} e4 
  * @returns 
  */
-const f_err=(e1, e2, e3, e4)=>MODULE_MLOG.f_err(e1, e2, e3, e4)
+const f_err = (e1, e2, e3, e4) => MODULE_MLOG.f_err(e1, e2, e3, e4)
 
 /**
  * 
@@ -56,7 +56,7 @@ function f_write_log(line_str) {
         const log_path = f_to_absolute_path("MODULE_MLOG/" + tdate.split("T")[0] + ".MODULE_MLOG")
         //parent path
         const parent_path = log_path.substr(0, log_path.lastIndexOf("/"))
-        if (f_is_dir(parent_path)||f_mkdir(parent_path)) {
+        if (f_is_dir(parent_path) || f_mkdir(parent_path)) {
             const msg = tdate + " " + line_str
             if (f_is_exist(log_path, true)) {
                 FSM.appendFileSync(log_path, msg, "utf-8")
@@ -74,19 +74,19 @@ function f_write_log(line_str) {
  * @param {*} path
  * @returns 
  */
-const f_to_absolute_path=(path)=>(path.startsWith(USER_DIR) ? "" : USER_DIR + "/") + path
+const f_to_absolute_path = (path) => (path.startsWith(USER_DIR) ? "" : USER_DIR + "/") + path
 /**
  * 
  * @param {*} path 
  * @returns 
  */
-const f_is_exist=(path)=>FSM.accessSync(path) == null
+const f_is_exist = (path) => FSM.accessSync(path) == null
 /**
  * 
  * @param {*} path 
  * @returns 
  */
-const f_mkdir=(path) =>FSM.mkdirSync(path, true) == null
+const f_mkdir = (path) => FSM.mkdirSync(path, true) == null
 
 
 
@@ -212,9 +212,9 @@ function writeFile(filePath, conter, isAppend, encoding) {
  * .isFile() 判断当前文件是否一个文件
  */
 function f_get_stat(path) {
-    try{
+    try {
         return FSM.statSync(f_to_absolute_path(path), false)
-    }catch (e){
+    } catch (e) {
         f_err(e)
         return null
     }
