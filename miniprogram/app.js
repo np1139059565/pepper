@@ -18,7 +18,7 @@ App({
         this.data.c_mdb=require("common/wx/mdb.js")
         this.data.c_mdb.static_init(this.data.c_mlog,this.data.c_myun,this.data.c_mfile)
       }catch (e1){
-        this.data.c_mlog.err(e1)
+        this.data.c_mlog.f_err(e1)
       }
     }catch (e){
       console.error(e)
