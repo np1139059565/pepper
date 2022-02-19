@@ -88,7 +88,24 @@ const f_is_exist = (path) => FSM.accessSync(path) == null
  */
 const f_mkdir = (path) => FSM.mkdirSync(path, true) == null
 
-
+/**
+ * 
+ * @param {*} path 
+ * @returns 
+ */
+const f_is_dir=(path) =>f_get_stat(path).f_is_directory()
+/**
+ *
+ * @param path
+ * @returns {void|*} Stats:
+ * .mode:
+ * .size:
+ * .lastAccessedTime:
+ * .lastModifiedTime:
+ * .f_is_directory() 判断当前文件是否一个目录
+ * .isFile() 判断当前文件是否一个文件
+ */
+ const f_get_stat=(path)=>FSM.statSync(f_to_absolute_path(path), false)
 
 
 
@@ -200,38 +217,11 @@ function writeFile(filePath, conter, isAppend, encoding) {
 
 
 
-/**
- *
- * @param path
- * @returns {void|*} Stats:
- * .mode:
- * .size:
- * .lastAccessedTime:
- * .lastModifiedTime:
- * .f_is_directory() 判断当前文件是否一个目录
- * .isFile() 判断当前文件是否一个文件
- */
-function f_get_stat(path) {
-    try {
-        return FSM.statSync(f_to_absolute_path(path), false)
-    } catch (e) {
-        f_err(e)
-        return null
-    }
-}
 
 
 
-function f_is_dir(path) {
-    try {
-        path = f_to_absolute_path(path)
-        const pinfo = f_get_stat(path)
-        return pinfo != null && pinfo.f_is_directory()
-    } catch (e) {
-        f_err("check is dir err", e)
-        return false
-    }
-}
+
+
 
 function f_remove_path(path) {
     try {
