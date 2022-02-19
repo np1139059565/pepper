@@ -6,7 +6,7 @@ const MODULE_MFILE = require("wx_file.js"),
 
 var logType=LOG_TYPES.DEBUG
 
-module.exports.f_static_init = function (s_logType) {
+module.exports.f_static_init = function (s_logType=LOG_TYPES.DEBUG) {
     try {
         f_info("init module mlog...")
         switch (s_logType.toUpperCase()){
