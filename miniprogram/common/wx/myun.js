@@ -11,7 +11,7 @@ const YUN_ID="yfwq1-4nvjm",
  * @param i3
  * @param i4
  */
- const f_info = (i1, i2, i3, i4) => MODULE_MLOG.f_f_info(i1, i2, i3, i4)
+ const f_info = (i1, i2, i3, i4) => MODULE_MLOG.f_static_info(i1, i2, i3, i4)
 
  /**
   * 
@@ -21,7 +21,7 @@ const YUN_ID="yfwq1-4nvjm",
   * @param {*} e4 
   * @returns 
   */
- const f_err = (e1, e2, e3, e4) => MODULE_MLOG.f_f_err(e1, e2, e3, e4)
+ const f_err = (e1, e2, e3, e4) => MODULE_MLOG.f_static_err(e1, e2, e3, e4)
 
 
 /**
