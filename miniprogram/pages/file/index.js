@@ -18,8 +18,8 @@ Page({
     onLoad: function () {
         try {
             //init dir
-            this.data.absolutePath = app.data.c_mfile.static_getUserDir()
-            app.data.c_mlog.info("absolutePath",this.data.absolutePath)
+            this.data.absolutePath = app.data.c_mfile.f_static_to_absolute_path()
+            app.data.c_mlog.f_static_info("absolutePath",this.data.absolutePath)
             this.setData(this.data)
             this.refushDir()
         } catch (e1) {
