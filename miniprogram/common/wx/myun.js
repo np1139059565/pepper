@@ -1,36 +1,7 @@
 const YUN_ID="yfwq1-4nvjm",
       YUN_FILE_ID="cloud://"+YUN_ID+".7966-yfwq1-4nvjm-1302064482/",
-      MODULE_MFILE= require("wx/wx_file.js"),
+      MODULE_MFILE= require("wx_file.js"),
       MODULE_MLOG = require("mlog.js")
- 
-
-module.exports.static_init = () => {
-    try {
-       
-        f_info("init module myun...")
-
-        if (!wx.cloud) {
-            f_err("请使用 2.2.3 或以上的基础库以使用云能力")
-        } else {
-            //init yun
-            wx.cloud.init({
-                // env 参数说明：
-                //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
-                //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
-                //   如不填则使用默认环境（第一个创建的环境）
-                env: YUN_ID,
-                traceUser: true,//将访问用户记录到云控制台的用户访问中
-            })
-            
-            module.exports.f_run_wx_yun_event = f_run_wx_yun_event
-            module.exports.downloadFileSync=downloadFile
-            module.exports.uploadFileSync=uploadFile
-            module.exports.delFileSync=delFile
-        }
-    } catch (e) {
-        f_err(e)
-    }
-}
 
 
 /**
@@ -74,7 +45,7 @@ module.exports.static_init = () => {
                 // r:
                 //      errMsg: "cloud.callFunction:ok"
                 //      requestID: "a8c535b2-6b46-11eb-8a7e-525400549ebe"
-                //      result:
+                //      result: 
                 //      data: [{…}]
                 //      errMsg: "collection.get:ok"
                 try {
@@ -197,3 +168,31 @@ function delFile(yunPathArr,callback){
     }
 }
 
+
+module.exports.static_init = () => {
+    try {
+       
+        f_info("init module myun...")
+
+        if (!wx.cloud) {
+            f_err("请使用 2.2.3 或以上的基础库以使用云能力")
+        } else {
+            //init yun
+            wx.cloud.init({
+                // env 参数说明：
+                //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
+                //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
+                //   如不填则使用默认环境（第一个创建的环境）
+                env: YUN_ID,
+                traceUser: true,//将访问用户记录到云控制台的用户访问中
+            })
+            
+            module.exports.f_run_wx_yun_event = f_run_wx_yun_event
+            module.exports.downloadFileSync=downloadFile
+            module.exports.uploadFileSync=uploadFile
+            module.exports.delFileSync=delFile
+        }
+    } catch (e) {
+        f_err(e)
+    }
+}

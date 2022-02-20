@@ -5,39 +5,6 @@ const MODULE_MLOG = require("mlog.js"),
 
 var dbName = null
 
-module.exports.f_static_init = (dbName1, callback) => {
-    const mcallback = (code) => {
-        //init methods
-        if (code) {
-            module.exports.f_query_local_table = f_query_local_table
-        }
-
-        if (typeof callback == "function") {
-            callback(code)
-        }
-    }
-    try {
-        f_info("init local_db...")
-
-        if (dbName1 != null) {
-            dbName = dbName1
-            f_info("switch local database path", MODULE_MFILE.f_static_to_absolute_path(dbName))
-
-            //refush local db
-            if (false == MODULE_MFILE.f_static_f_is_dir(MODULE_MFILE.f_static_getUserDir(dbName))) {
-                f_info("init local db..")
-                f_init_local_db(mcallback)
-            } else mcallback(true)
-        } else {
-            mcallback(false, "database name is null!")
-        }
-    } catch (e) {
-        f_err(e)
-        mcallback(0, MODULE_MLOG.f_static_get_msg(e))
-    }
-}
-module.exports.f_static_get_tables=this.f_get_tables
-
 
 /**
  *
@@ -141,4 +108,37 @@ const f_query_wx_yun_db=(callback,params=null) =>MODULE_MYUN.f_run_wx_yun_event(
     }
 })
 
+
+module.exports.f_static_init = (dbName1, callback) => {
+    const mcallback = (code) => {
+        //init methods
+        if (code) {
+            module.exports.f_query_local_table = f_query_local_table
+        }
+
+        if (typeof callback == "function") {
+            callback(code)
+        }
+    }
+    try {
+        f_info("init local_db...")
+
+        if (dbName1 != null) {
+            dbName = dbName1
+            f_info("switch local database path", MODULE_MFILE.f_static_to_absolute_path(dbName))
+
+            //refush local db
+            if (false == MODULE_MFILE.f_static_f_is_dir(MODULE_MFILE.f_static_getUserDir(dbName))) {
+                f_info("init local db..")
+                f_init_local_db(mcallback)
+            } else mcallback(true)
+        } else {
+            mcallback(false, "database name is null!")
+        }
+    } catch (e) {
+        f_err(e)
+        mcallback(0, MODULE_MLOG.f_static_get_msg(e))
+    }
+}
+module.exports.f_static_get_tables=this.f_get_tables
 
