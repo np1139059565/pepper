@@ -52,7 +52,7 @@ function f_write_log(line_str) {
  * @param {*} path
  * @returns 
  */
-const f_to_absolute_path = (path) => (path.startsWith(USER_DIR)||path.startsWith("/") ? "" : (USER_DIR + "/")) + path
+const f_to_absolute_path = (path="") => (path.startsWith(USER_DIR)||path.startsWith("/") ? "" : (USER_DIR + "/")) + path
 /**
  * 
  * @param {*} path 
