@@ -123,7 +123,7 @@ module.exports.f_static_init = (dbName1, callback) => {
             f_info("switch local database path", MODULE_MFILE.f_static_to_absolute_path(dbName))
 
             //refush local db
-            if (false == MODULE_MFILE.f_static_f_is_dir(MODULE_MFILE.f_static_get_absolute_path(dbName))) {
+            if (false == MODULE_MFILE.f_static_f_is_dir(MODULE_MFILE.f_static_to_absolute_path(dbName))) {
                 f_info("init local db..")
                 f_init_local_db(mcallback)
             } else mcallback(true)
