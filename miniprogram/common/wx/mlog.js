@@ -2,6 +2,10 @@ const MODULE_MFILE = require("wx_file.js"),
       LOG_TYPES={
         DEBUG:"DEBUG",
         INFO:"INFO"
+      },
+      INFO_TYPES={
+          ERROR="ERROR",
+          INIFO="INFO"
       }
 
 var logType=LOG_TYPES.DEBUG
@@ -16,23 +20,23 @@ var logType=LOG_TYPES.DEBUG
  * @param {*} e5 
  * @returns 
  */
- const f_err=(e2, e3, e4, e5) =>f_info(e2,e3,e4,e5,"error")
+ const f_err=(e2, e3, e4, e5) =>f_info(e2,e3,e4,e5,INFO_TYPES.ERROR)
  /**
  * 
- * @param {*} title 
+ * @param {*} info_type 
  * @param {*} i2 
  * @param {*} i3 
  * @param {*} i4 
  * @param {*} i5 
  */
-function f_info(i2, i3, i4, i5,title="info") {
+function f_info(i2, i3, i4, i5,info_type=INFO_TYPES.INFO) {
     try{
         const msg=f_get_msg(i2, i3, i4, i5)
         
-        console.info(title, msg)
-        MODULE_MFILE.f_static_write_log(title + ":\r\n" + msg + "\r\n")
-        if(logType==LOG_TYPES.DEBUG){
-            f_show_toast(title+msg)
+        console.info(info_type, msg)
+        MODULE_MFILE.f_static_write_log(info_type + ":\r\n" + msg + "\r\n")
+        if(logType==LOG_TYPES.DEBUG||info_type==INFO_TYPES.ERROR){
+            f_show_toast(info_type+msg)
         }
     }catch(e){
         f_err(e)
