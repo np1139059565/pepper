@@ -21,7 +21,9 @@ Page({
                     this.setData(this.data)
                 }).exec()
             }
-            //refush tree
+            //init tree
+            this.data.tree.path = app.data.wx_file.f_static_get_absolute_path()
+            this.setData(this.data)
             this.f_refush_child()
         } catch (e) {
             app.data.c_mlog.f_static_err(e)
@@ -30,10 +32,6 @@ Page({
 
     f_refush_child: function (isClearEdit=false) {
         try {
-            //init path
-            this.data.tree.path = app.data.wx_file.f_static_get_absolute_path()
-            this.setData(this.data)
-
             //refush child
             this.data.tree.child_arr = app.data.wx_file.f_static_readdir(this.data.tree.path).map(dirName => {
                 var msg = "permission"
