@@ -32,7 +32,7 @@ Page({
         try {
             //init path
             if(this.data.tree.path==""){
-                this.data.tree.path = app.data.wx_file.f_static_get_absolute_path("write-voice-assistant")
+                this.data.tree.path = app.data.wx_file.f_static_get_absolute_path()
                  app.data.wx_file.f_static_mkdir(this.data.tree.path)
             }
 
