@@ -3,136 +3,125 @@ const app = getApp()
 
 Page({
     data: {
-        dButtons: {
-            refush: {
-                text: "refush",
-                ev: "refushDir"
-            }
+        editor: {
+            ctx: null,
+            file_name:""
         },
-        absolutePath: null,
-        childArr: [],//[{text:dir1,eventData:dir1}]
-        editFileName: null,
-        editorCtx:null,
-        editConter:""
-    },
-    onLoad: function () {
-        try {
-            //init dir
-            this.data.absolutePath = app.data.c_mfile.f_static_get_absolute_path()
-            app.data.c_mlog.f_static_info("absolutePath",this.data.absolutePath)
-            this.setData(this.data)
-            this.refushDir()
-        } catch (e1) {
-            app.data.c_mlog.f_static_err(e1)
+        tree:{
+            path:"",
+            child_arr:[]//[{text,evData}]
         }
     },
-    refushDir: function () {
+    onLoad:function() {
         try {
-            this.data.childArr = app.data.c_mfile.f_static_readdir(this.data.absolutePath).map(childName => {
-                var childInfo = "permission"
-                const stat = app.data.c_mfile.f_static_getstat(this.data.absolutePath  + childName)
-                if(stat!=null){
-                    if (stat.isDirectory()) {
-                        childInfo = "dir"
-                    }else{
-                        childInfo = "file:" + stat.size
-                    }
-                }
-                return {text: childName + ":" + childInfo, eventData: childName}
-            })
-            this.data.childArr.splice(0, 0, {text: "..", eventData: ".."})
-            this.setData(this.data)
-        } catch (e1) {
-            app.data.c_mlog.f_static_err(e1)
-        }
-    },
-    editFile: function () {
-        try {
-            const ftext = app.data.c_mfile.f_static_readfile(this.data.absolutePath+this.data.editFileName)
-            if(this.data.editorCtx!=null){
-                this.data.editorCtx.setContents({
-                    html: ftext
-                });
-            }else{
-                wx.createSelectorQuery().select("#i-edit").context( (res) =>{
-                    //这里使用function会没办法使用this
-                    res.context.setContents({
-                        html: ftext
-                    })
-                    this.data.editorCtx = res.context
+            //init editor
+            if (this.data.editor.ctx == null) {
+                this.data.editor.ctx = wx.createSelectorQuery().select("#i-editor").context((ccr) => {
+                    this.data.editor.ctx = ccr.context
                     this.setData(this.data)
                 }).exec()
             }
-        } catch (e1) {
-            app.data.c_mlog.f_static_err(e1)
+            //refush tree
+            this.f_refush_child()
+        } catch (e) {
+            app.data.c_mlog.f_static_err(e)
         }
     },
-    saveFile:function (){
+
+    f_refush_child: function (isClearEdit=false) {
         try {
-            const editFilePath=this.data.absolutePath+this.data.editFileName
-            if(app.data.c_mfile.f_static_isexist(editFilePath)){
-                app.data.c_mlog.static_showModal("保存?",()=>{
-                    const wcode=app.data.c_mfile.f_static_write_file(editFilePath,this.data.editConter.replaceAll(" "," "))
-                    app.data.c_mlog.static_showModal("保存文件结果："+wcode)
-                },()=>{
-                    //刷新文件内容
-                    // this.editFile()
-                })
-            }else {
-                //not find;clear
-                this.data.editFileName=null
-                this.data.editorCtx.setContents({
-                    html: ""
-                })
-                this.setData(this.data)
+            //init path
+            if(this.data.tree.path==""){
+                this.data.tree.path = app.data.wx_file.f_static_get_absolute_path("write-voice-assistant")
+                 app.data.wx_file.f_static_mkdir(this.data.tree.path)
+            }
+
+            //refush child
+            this.data.tree.child_arr = app.data.wx_file.f_static_readdir(this.data.tree.path).map(dirName => {
+                var msg = "permission"
+                const stat = app.data.wx_file.f_static_getstat(this.data.tree.path + dirName)
+                if (stat != null) {
+                    if (stat.isDirectory()) {
+                        msg = "d"
+                    } else {
+                        msg = "f:" + stat.size
+                    }
+                }
+                return {text: dirName + ":" + msg, evData: dirName}
+            })
+            //add ".." child
+            this.data.tree.child_arr.splice(0, 0, {text: "..", evData: ".."})
+
+            if(isClearEdit){
+                //clear editor
+                this.data.editor.file_name=""
+                this.data.editor.ctx.clear()
             }
         } catch (e1) {
             app.data.c_mlog.f_static_err(e1)
+        }finally {
+            this.setData(this.data)
+            app.data.c_mlog.f_static_info("refush child", this.data.tree.path)
         }
     },
-    refushEditConter:function (e){
-      this.data.editConter=e.detail.text
-      this.setData(this.data)
+    f_open_file: function (fileName) {
+        try {
+            this.data.editor.file_name=fileName
+            this.data.editor.ctx.clear()
+            this.data.editor.ctx.insertText({text:app.data.wx_file.f_static_readfile(this.data.tree.path + fileName)})
+        } catch (e1) {
+            app.data.c_mlog.f_static_err(e1)
+        }finally {
+            this.setData(this.data)
+            app.data.c_mlog.f_static_info("open file",this.data.tree.path,this.data.editor.file_name)
+        }
     },
-    clickChild: function (e) {
+    f_save_file: function () {
+        try {
+            app.data.c_mlog.f_wx_static_show_modal("保存?",() => {
+                this.data.editor.ctx.getContents({
+                    success:res=>{
+                        try{
+                            app.data.c_mlog.f_wx_static_show_toast("保存结果："
+                                + app.data.wx_file.f_static_writefile(this.data.tree.path+this.data.editor.file_name, res.text))
+                            this.f_refush_child()
+                        }catch (e){
+                            app.data.c_mlog.f_static_err(e)
+                        }
+                    }
+                })
+            }, () => {})
+        } catch (e) {
+            app.data.c_mlog.f_static_err(e)
+        }
+    },
+
+    f_next: function (e) {
         try {
             const childName = e.currentTarget.dataset.event1Data1
             switch (childName) {
                 case "..":
-                    // back wxfile://usr/
-                    if (this.data.absolutePath.split("/").length>4) {
-                        const absoluteArr = this.data.absolutePath.split("/").filter((child,i)=>i==1||child!="")
-                        this.data.absolutePath = absoluteArr.splice(0, absoluteArr.length - 1).join("/")+"/"
+                    // back...
+                    const backPath=this.data.tree.path.substr(0,
+                        this.data.tree.path.substr(0,this.data.tree.path.length-1).lastIndexOf("/"))+"/"
+                    if (false==app.data.wx_file.f_static_get_absolute_path().endsWith(backPath)) {
+                        this.data.tree.path = backPath
                         this.setData(this.data)
-                        this.refushDir()
+                        this.f_refush_child(true)
                     } else {
-                        app.data.c_mlog.f_static_err("is root dir:" + this.data.absolutePath)
+                        app.data.c_mlog.f_static_err("is root dir",backPath)
                     }
                     break;
                 default:
                     // next
-                    const childPath = this.data.absolutePath  + childName
-                    const stat = app.data.c_mfile.f_static_getstat(childPath)
-                    if (stat!=null&&stat.isDirectory()) {
-                        // open dir
-                        this.data.absolutePath = childPath+"/"
+                    const childPath = this.data.tree.path + childName
+                    const stat = app.data.wx_file.f_static_getstat(childPath)
+                    if(stat!=null&&stat.isDirectory()){
+                        this.data.tree.path = childPath + "/"
                         this.setData(this.data)
-                        this.refushDir()
-                    } else if (stat.isFile()) {
-                        //save file
-                        if(childName==this.data.editFileName){
-                            this.saveFile()
-                        }else{
-                            // open file
-                            const callback = () => {
-                                this.data.editFileName = childName
-                                this.setData(this.data)
-                                this.editFile()
-                            }
-                            if (stat.size > 1024) {
-                                app.data.c_mlog.static_showModal("文件过大，任然打开?", callback, () => {})
-                            } else callback()
-                        }
+                        this.f_refush_child(true)
+                    }else{
+                        this.f_refush_child()
                     }
                     break;
             }
@@ -140,17 +129,87 @@ Page({
             app.data.c_mlog.f_static_err(e1)
         }
     },
-    removeChild: function (e) {
+    f_show_menus: function (e) {
         try {
-            const fPath = this.data.absolutePath + e.currentTarget.dataset.event1Data1
-            app.data.c_mlog.static_showModal("确定删除 " + fPath + "?", () => {
-                if (app.data.c_mfile.f_static_rmpath(fPath)) {
-                    this.refushDir()
+            const sheet=[]
+            const childName=e.currentTarget.dataset.event1Data1
+            const childPath=this.data.tree.path+childName
+            const stat=app.data.wx_file.f_static_getstat(childPath)
+            if(stat!=null){
+                sheet.push("DELETE")
+                if(stat.isDirectory()){
+                    sheet.push("NEXT")
+                }else{
+                    sheet.push("OPEN")
+                    if(childName==this.data.editor.file_name){
+                        sheet.push("SAVE")
+                    }
                 }
-            }, () => {
-            })
+            }
+            app.data.c_mlog.f_wx_static_show_sheet(sheet,(sval,sindex)=>{
+                try{
+                    switch (sval){
+                        case "DELETE":
+                            app.data.c_mlog.f_wx_static_show_modal("确定删除 " + childName + "?", () => {
+                                app.data.c_mlog.f_wx_static_show_toast("del is "+app.data.wx_file.f_static_rmpath(childPath))
+                                this.f_refush_child(true)
+                            }, () => {
+                            })
+                            break;
+                        case "SAVE":
+                            this.f_save_file()
+                            break;
+                        case "NEXT":
+                            this.data.tree.path = childPath+"/"
+                            this.setData(this.data)
+                            this.f_refush_child(true)
+                            break;
+                        case "OPEN":
+                            if (stat.size > 1024) {
+                                app.data.c_mlog.f_wx_static_show_modal("文件过大，任然打开?", () => {
+                                    this.f_open_file(childName)
+                                }, () => {
+                                })
+                            } else {
+                                this.f_open_file(childName)
+                            }
+                            break;
+
+                    }
+                }catch (e1){
+                    app.data.c_mlog.f_static_err(e1)
+                }
+            },()=>{})
+
+
         } catch (e1) {
             app.data.c_mlog.f_static_err(e1)
         }
     },
+    f_edit_to_new_file:function (e){
+        try{
+            this.data.editor.ctx.getContents({
+                success:res=>{
+                    try{
+                        const fileName=res.text.split("\n")[0].trim()
+                        if(fileName!=""){
+                            app.data.c_mlog.f_wx_static_show_modal("create new file:"+fileName+"?",()=>{
+                                try{
+                                    app.data.c_mlog.f_wx_static_show_toast("保存结果："
+                                        + app.data.wx_file.f_static_writefile(this.data.tree.path+fileName, res.text))
+                                    this.f_refush_child()
+                                }catch (e1){
+                                    app.data.c_mlog.f_static_err(e1)
+                                }
+                            },()=>{})
+                        }
+                    }catch (e1){
+                        app.data.c_mlog.f_static_err(e1)
+                    }
+                }
+            })
+        }catch (e1) {
+            app.data.c_mlog.f_static_err(e1)
+        }
+    }
 })
