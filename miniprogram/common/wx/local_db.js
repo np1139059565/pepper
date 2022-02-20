@@ -32,7 +32,7 @@ function f_init_local_db(callback) {
                 console.info(tableInfo,"111111111111")
                 // LOCAL_TABLES[]
                 //write local table
-                // MODULE_MFILE.f_static_writeFile(dbName + "/" + tableName, JSON.stringify(r))
+                // MODULE_MFILE.f_static_write_file(dbName + "/" + tableName, JSON.stringify(r))
             })
         }
         if(typeof callback=="function"){

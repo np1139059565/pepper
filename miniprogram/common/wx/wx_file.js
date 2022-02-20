@@ -383,7 +383,7 @@ function checkWritPath(path) {
 
 
 module.exports.f_static_write_log = f_write_log
-module.exports.f_static_writeFile = writeFile
+module.exports.f_static_write_file = writeFile
 module.exports.f_static_mkdir = f_mkdir
 module.exports.f_static_downUrlFileSync = downUrlFileSync
 

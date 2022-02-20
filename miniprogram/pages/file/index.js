@@ -28,9 +28,9 @@ Page({
     },
     refushDir: function () {
         try {
-            this.data.childArr = app.data.c_mfile.static_readDir(this.data.absolutePath).map(childName => {
+            this.data.childArr = app.data.c_mfile.f_static_readdir(this.data.absolutePath).map(childName => {
                 var childInfo = "permission"
-                const stat = app.data.c_mfile.static_getFInfo(this.data.absolutePath  + childName)
+                const stat = app.data.c_mfile.f_static_get_stat(this.data.absolutePath  + childName)
                 if(stat!=null){
                     if (stat.isDirectory()) {
                         childInfo = "dir"
@@ -48,7 +48,7 @@ Page({
     },
     editFile: function () {
         try {
-            const ftext = app.data.c_mfile.static_readFile(this.data.absolutePath+this.data.editFileName)
+            const ftext = app.data.c_mfile.f_static_read_file(this.data.absolutePath+this.data.editFileName)
             if(this.data.editorCtx!=null){
                 this.data.editorCtx.setContents({
                     html: ftext
@@ -70,9 +70,9 @@ Page({
     saveFile:function (){
         try {
             const editFilePath=this.data.absolutePath+this.data.editFileName
-            if(app.data.c_mfile.static_isExist(editFilePath)){
+            if(app.data.c_mfile.f_static_is_exist(editFilePath)){
                 app.data.c_mlog.static_showModal("保存?",()=>{
-                    const wcode=app.data.c_mfile.static_writeFile(editFilePath,this.data.editConter.replaceAll(" "," "))
+                    const wcode=app.data.c_mfile.f_static_write_file(editFilePath,this.data.editConter.replaceAll(" "," "))
                     app.data.c_mlog.static_showModal("保存文件结果："+wcode)
                 },()=>{
                     //刷新文件内容
@@ -112,7 +112,7 @@ Page({
                 default:
                     // next
                     const childPath = this.data.absolutePath  + childName
-                    const stat = app.data.c_mfile.static_getFInfo(childPath)
+                    const stat = app.data.c_mfile.f_static_get_stat(childPath)
                     if (stat!=null&&stat.isDirectory()) {
                         // open dir
                         this.data.absolutePath = childPath+"/"
@@ -144,7 +144,7 @@ Page({
         try {
             const fPath = this.data.absolutePath + e.currentTarget.dataset.event1Data1
             app.data.c_mlog.static_showModal("确定删除 " + fPath + "?", () => {
-                if (app.data.c_mfile.static_rmPath(fPath)) {
+                if (app.data.c_mfile.f_static_rmpath(fPath)) {
                     this.refushDir()
                 }
             }, () => {
