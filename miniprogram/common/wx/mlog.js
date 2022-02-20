@@ -8,7 +8,6 @@ var logType=LOG_TYPES.DEBUG
 
 module.exports.f_static_init = function (s_logType=LOG_TYPES.DEBUG) {
     try {
-        f_info("init module mlog...")
         switch (s_logType.toUpperCase()){
             case LOG_TYPES.DEBUG:
                 logType=LOG_TYPES.DEBUG;
@@ -17,16 +16,17 @@ module.exports.f_static_init = function (s_logType=LOG_TYPES.DEBUG) {
                 logType=LOG_TYPES.INFO;
                 break;
         }
+        f_info("init module mlog...")
         f_info("switch mlog type",logType)
-        
-        module.exports.f_info = f_info
-        module.exports.f_err = f_err
     } catch (e) {
         f_err(e)
     }
 }
 
+module.exports.f_static_info = f_info
+module.exports.f_static_err = f_err
 module.exports.f_static_get_msg=f_get_msg
+module.exports.f_static_get_types=()=> LOG_TYPES
 module.exports.f_static_show_toast=f_show_toast
 module.exports.f_static_show_modal=f_show_modal
 module.exports.f_static_show_sheet=f_show_sheet

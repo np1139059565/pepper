@@ -23,7 +23,7 @@ Page({
             this.setData(this.data)
             this.refushDir()
         } catch (e1) {
-            app.data.c_mlog.f_err(e1)
+            app.data.c_mlog.f_static_err(e1)
         }
     },
     refushDir: function () {
@@ -43,7 +43,7 @@ Page({
             this.data.childArr.splice(0, 0, {text: "..", eventData: ".."})
             this.setData(this.data)
         } catch (e1) {
-            app.data.c_mlog.f_err(e1)
+            app.data.c_mlog.f_static_err(e1)
         }
     },
     editFile: function () {
@@ -64,7 +64,7 @@ Page({
                 }).exec()
             }
         } catch (e1) {
-            app.data.c_mlog.f_err(e1)
+            app.data.c_mlog.f_static_err(e1)
         }
     },
     saveFile:function (){
@@ -87,7 +87,7 @@ Page({
                 this.setData(this.data)
             }
         } catch (e1) {
-            app.data.c_mlog.f_err(e1)
+            app.data.c_mlog.f_static_err(e1)
         }
     },
     refushEditConter:function (e){
@@ -106,7 +106,7 @@ Page({
                         this.setData(this.data)
                         this.refushDir()
                     } else {
-                        app.data.c_mlog.f_err("is root dir:" + this.data.absolutePath)
+                        app.data.c_mlog.f_static_err("is root dir:" + this.data.absolutePath)
                     }
                     break;
                 default:
@@ -137,7 +137,7 @@ Page({
                     break;
             }
         } catch (e1) {
-            app.data.c_mlog.f_err(e1)
+            app.data.c_mlog.f_static_err(e1)
         }
     },
     removeChild: function (e) {
@@ -150,7 +150,7 @@ Page({
             }, () => {
             })
         } catch (e1) {
-            app.data.c_mlog.f_err(e1)
+            app.data.c_mlog.f_static_err(e1)
         }
     },
 })
