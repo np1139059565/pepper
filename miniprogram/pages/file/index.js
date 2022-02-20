@@ -31,10 +31,8 @@ Page({
     f_refush_child: function (isClearEdit=false) {
         try {
             //init path
-            if(this.data.tree.path==""){
-                this.data.tree.path = app.data.wx_file.f_static_get_absolute_path()
-                 app.data.wx_file.f_static_mkdir(this.data.tree.path)
-            }
+            this.data.tree.path = app.data.wx_file.f_static_get_absolute_path()
+            this.setData(this.data)
 
             //refush child
             this.data.tree.child_arr = app.data.wx_file.f_static_readdir(this.data.tree.path).map(dirName => {
