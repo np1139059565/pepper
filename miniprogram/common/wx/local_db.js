@@ -41,11 +41,6 @@ function f_init_local_db(callback) {
     })
 }
 
-
-module.exports.f_get_tables = () => {
-    return LOCAL_TABLES
-}
-
 /**
  * 
  * @param {*} tableName 
@@ -140,5 +135,6 @@ module.exports.f_static_init = (dbName1, callback) => {
         mcallback(0, MODULE_MLOG.f_static_get_msg(e))
     }
 }
-module.exports.f_static_get_tables=this.f_get_tables
-
+module.exports.f_static_get_tables = () => {
+    return LOCAL_TABLES
+}
