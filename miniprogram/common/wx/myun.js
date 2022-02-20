@@ -169,7 +169,7 @@ function delFile(yunPathArr,callback){
 }
 
 
-module.exports.static_init = () => {
+module.exports.f_static_init = () => {
     try {
        
         f_info("init module myun...")

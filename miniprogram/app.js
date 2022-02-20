@@ -14,9 +14,9 @@ App({
       try{
         this.data.c_mfile=require("common/wx/wx_file.js")
         this.data.c_myun=require("common/wx/myun.js")
-        this.data.c_myun.static_init()
+        this.data.c_myun.f_static_init()
         this.data.c_mdb=require("common/wx/local_db.js")
-        this.data.c_mdb.static_init("db_pepper")
+        this.data.c_mdb.f_static_init("db_pepper")
       }catch (e1){
         this.data.c_mlog.f_static_err(e1)
       }
