@@ -47,7 +47,7 @@ function f_init_local_db(callback) {
  * @returns 
  */
 function f_query_local_table(tableName) {
-    return MODULE_MFILE.f_static_read_file(dbName +"/"+ tableName)
+    return MODULE_MFILE.f_static_readfile(dbName +"/"+ tableName)
 }
 
 /**
@@ -120,10 +120,10 @@ module.exports.f_static_init = (dbName1, callback) => {
 
         if (dbName1 != null) {
             dbName = dbName1
-            f_info("switch local database path", MODULE_MFILE.f_static_to_absolute_path(dbName))
+            f_info("switch local database path", MODULE_MFILE.f_static_get_absolute_path(dbName))
 
             //refush local db
-            if (false == MODULE_MFILE.f_static_f_is_dir(MODULE_MFILE.f_static_to_absolute_path(dbName))) {
+            if (false == MODULE_MFILE.f_static_f_isdir(MODULE_MFILE.f_static_get_absolute_path(dbName))) {
                 f_info("init local db..")
                 f_init_local_db(mcallback)
             } else mcallback(true)

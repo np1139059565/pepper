@@ -393,9 +393,9 @@ module.exports.f_static_unzip_sync = f_unzip_sync
 module.exports.f_static_copyFile = copyFile
 module.exports.f_static_copyDir = copyDir
 
-module.exports.f_static_to_absolute_path = f_to_absolute_path
+module.exports.f_static_get_absolute_path = f_to_absolute_path
 module.exports.f_static_readdir = f_readdir
 module.exports.f_static_readfile = f_readfile
-module.exports.f_static_get_stat = f_get_stat
-module.exports.f_static_is_exist = f_is_exist
-module.exports.f_static_f_is_dir = f_is_dir
+module.exports.f_static_getstat = f_get_stat
+module.exports.f_static_isexist = f_is_exist
+module.exports.f_static_f_isdir = f_is_dir

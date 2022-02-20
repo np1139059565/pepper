@@ -18,7 +18,7 @@ Page({
     onLoad: function () {
         try {
             //init dir
-            this.data.absolutePath = app.data.c_mfile.f_static_to_absolute_path()
+            this.data.absolutePath = app.data.c_mfile.f_static_get_absolute_path()
             app.data.c_mlog.f_static_info("absolutePath",this.data.absolutePath)
             this.setData(this.data)
             this.refushDir()
@@ -30,7 +30,7 @@ Page({
         try {
             this.data.childArr = app.data.c_mfile.f_static_readdir(this.data.absolutePath).map(childName => {
                 var childInfo = "permission"
-                const stat = app.data.c_mfile.f_static_get_stat(this.data.absolutePath  + childName)
+                const stat = app.data.c_mfile.f_static_getstat(this.data.absolutePath  + childName)
                 if(stat!=null){
                     if (stat.isDirectory()) {
                         childInfo = "dir"
@@ -48,7 +48,7 @@ Page({
     },
     editFile: function () {
         try {
-            const ftext = app.data.c_mfile.f_static_read_file(this.data.absolutePath+this.data.editFileName)
+            const ftext = app.data.c_mfile.f_static_readfile(this.data.absolutePath+this.data.editFileName)
             if(this.data.editorCtx!=null){
                 this.data.editorCtx.setContents({
                     html: ftext
@@ -70,7 +70,7 @@ Page({
     saveFile:function (){
         try {
             const editFilePath=this.data.absolutePath+this.data.editFileName
-            if(app.data.c_mfile.f_static_is_exist(editFilePath)){
+            if(app.data.c_mfile.f_static_isexist(editFilePath)){
                 app.data.c_mlog.static_showModal("保存?",()=>{
                     const wcode=app.data.c_mfile.f_static_write_file(editFilePath,this.data.editConter.replaceAll(" "," "))
                     app.data.c_mlog.static_showModal("保存文件结果："+wcode)
@@ -112,7 +112,7 @@ Page({
                 default:
                     // next
                     const childPath = this.data.absolutePath  + childName
-                    const stat = app.data.c_mfile.f_static_get_stat(childPath)
+                    const stat = app.data.c_mfile.f_static_getstat(childPath)
                     if (stat!=null&&stat.isDirectory()) {
                         // open dir
                         this.data.absolutePath = childPath+"/"
