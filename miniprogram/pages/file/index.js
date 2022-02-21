@@ -106,7 +106,7 @@ Page({
                         this.setData(this.data)
                         this.f_refush_child(true)
                     } else {
-                        app.data.module_log.f_static_show_loading("is root dir",parent_path)
+                        app.data.module_log.f_static_show_loading("已经到根目录了！")
                     }
                     break;
                 default:
