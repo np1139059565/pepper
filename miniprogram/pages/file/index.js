@@ -26,7 +26,7 @@ Page({
             this.f_refush_child()
         } catch (e) {
             app.f_err(e)
-            app.data.module_log.f_wx_static_show_modal({title:"严重错误",content:"页面初始化失败,请退出重新打开试试!",})
+            his.data.module_log.f_static_show_loading({title:"页面初始化失败,请退出重新打开试试!",mask:true})
         }finally{
             this.setData(this.data)
         }

@@ -21,7 +21,7 @@ App({
       this.data.module_db.f_static_init("db_pepper")
     }catch (e){
       this.f_err(e)
-      this.data.module_log.f_static_show_modal({title:"严重错误",content:"app.js初始化失败,请退出重新打开试试!",})
+      this.data.module_log.f_static_show_loading({title:"严重错误",content:"app.js初始化失败,请退出重新打开试试!",})
     }
   },
   f_err:(e)=>console.error(e),
