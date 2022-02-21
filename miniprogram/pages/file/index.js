@@ -101,9 +101,8 @@ Page({
             switch (childName) {
                 case "..":
                     // back...
-                    const parent_path=this.data.tree.path.substr(0,this.data.tree.path.lastIndexOf("/")+1)
-                    if (false == app.data.wx_file.f_static_get_absolute_path().endsWith(parent_path)) {
-                        this.data.tree.path = parent_path.substr(0,parent_path.length-1)
+                    if (false == (this.data.tree.path+"/").endsWith(app.data.wx_file.f_static_get_absolute_path())) {
+                        this.data.tree.path = this.data.tree.path.substr(0,this.data.tree.path.lastIndexOf("/"))
                         this.setData(this.data)
                         this.f_refush_child(true)
                     } else {
