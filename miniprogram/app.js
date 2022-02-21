@@ -10,7 +10,7 @@ App({
     //init log
     try{
       this.data.module_log=require("common/wx/mlog.js")
-      this.data.module_log.f_static_init(this.data.module_log.f_static_get_types().INFO)
+      this.data.module_log.f_static_init(this.data.module_log.f_static_get_log_types().INFO)
       this.f_err=this.data.module_log.f_static_err
       this.f_info=this.data.module_log.f_static_info
       try{
