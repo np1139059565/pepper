@@ -22,7 +22,8 @@ Page({
                 }).exec()
             }
             //init tree
-            this.data.tree.path = app.data.wx_file.f_static_get_absolute_path()
+            const absolute_path = app.data.wx_file.f_static_get_absolute_path()
+            this.data.tree.path=absolute_path.substr(0,absolute_path.length-1)
             this.f_refush_child()
         } catch (e) {
             app.f_err(e)
@@ -100,13 +101,13 @@ Page({
             switch (childName) {
                 case "..":
                     // back...
-                    const backPath=this.data.tree.path.substr(0,this.data.tree.path.lastIndexOf("/"))
-                    if (false == app.data.wx_file.f_static_get_absolute_path().endsWith(backPath)) {
-                        this.data.tree.path = backPath
+                    const parent_path=this.data.tree.path.substr(0,this.data.tree.path.lastIndexOf("/")+1)
+                    if (false == app.data.wx_file.f_static_get_absolute_path().endsWith(parent_path)) {
+                        this.data.tree.path = parent_path.substr(0,parent_path.length-1)
                         this.setData(this.data)
                         this.f_refush_child(true)
                     } else {
-                        app.f_err("is root dir",backPath)
+                        app.f_err("is root dir",parent_path)
                     }
                     break;
                 default:
