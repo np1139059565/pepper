@@ -7,23 +7,21 @@ App({
     module_db:null
   },
   onLaunch: function () {
-    //init log
     try{
+      //init log
       this.data.module_log=require("common/wx/mlog.js")
       this.data.module_log.f_static_init(this.data.module_log.f_static_get_log_types().INFO)
       this.f_err=this.data.module_log.f_static_err
       this.f_info=this.data.module_log.f_static_info
-      try{
-        this.data.wx_file=require("common/wx/wx_file.js")
-        this.data.module_yun=require("common/wx/myun.js")
-        this.data.module_yun.f_static_init()
-        this.data.module_db=require("common/wx/local_db.js")
-        this.data.module_db.f_static_init("db_pepper")
-      }catch (e1){
-        this.data.module_log.f_static_err(e1)
-      }
+      //init all module
+      this.data.wx_file=require("common/wx/wx_file.js")
+      this.data.module_yun=require("common/wx/myun.js")
+      this.data.module_yun.f_static_init()
+      this.data.module_db=require("common/wx/local_db.js")
+      this.data.module_db.f_static_init("db_pepper")
     }catch (e){
       this.f_err(e)
+      this.data.module_log.f_wx_static_show_modal({title:"严重错误",content:"app.js初始化失败,请退出重新打开试试!",})
     }
   },
   f_err:(e)=>console.error(e),
