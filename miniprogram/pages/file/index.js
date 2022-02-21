@@ -37,7 +37,7 @@ Page({
             //refush child
             this.data.tree.child_arr = app.data.wx_file.f_static_readdir(this.data.tree.path).map(dirName => {
                 var msg = "permission"
-                const stat = app.data.wx_file.f_static_getstat(this.data.tree.path + dirName)
+                const stat = app.data.wx_file.f_static_getstat(this.data.tree.path+"/" + dirName)
                 if (stat != null) {
                     if (stat.isDirectory()) {
                         msg = "d"
@@ -66,7 +66,7 @@ Page({
         try {
             this.data.editor.file_name=fileName
             this.data.editor.ctx.clear()
-            this.data.editor.ctx.insertText({text:app.data.wx_file.f_static_readfile(this.data.tree.path + fileName)})
+            this.data.editor.ctx.insertText({text:app.data.wx_file.f_static_readfile(this.data.tree.path+"/" + fileName)})
         } catch (e1) {
             app.f_err(e1)
         }finally {
@@ -81,7 +81,7 @@ Page({
                     success:res=>{
                         try{
                             app.data.module_log.f_wx_static_show_toast("保存结果："
-                                + app.data.wx_file.f_static_writefile(this.data.tree.path+this.data.editor.file_name, res.text))
+                                + app.data.wx_file.f_static_writefile(this.data.tree.path+"/"+this.data.editor.file_name, res.text))
                             this.f_refush_child()
                         }catch (e){
                             app.f_err(e)
@@ -100,8 +100,7 @@ Page({
             switch (childName) {
                 case "..":
                     // back...
-                    const backPath=this.data.tree.path.substr(0,
-                        this.data.tree.path.substr(0,this.data.tree.path.length-1).lastIndexOf("/"))+"/"
+                    const backPath=this.data.tree.path.substr(0,this.data.tree.path.lastIndexOf("/"))
                     if (false == app.data.wx_file.f_static_get_absolute_path().endsWith(backPath)) {
                         this.data.tree.path = backPath
                         this.setData(this.data)
@@ -112,10 +111,10 @@ Page({
                     break;
                 default:
                     // next
-                    const childPath = this.data.tree.path + childName
+                    const childPath = this.data.tree.path +"/"+ childName
                     const stat = app.data.wx_file.f_static_getstat(childPath)
                     if(stat!=null&&stat.isDirectory()){
-                        this.data.tree.path = childPath + "/"
+                        this.data.tree.path = childPath
                         this.setData(this.data)
                         this.f_refush_child(true)
                     }else{
@@ -131,7 +130,7 @@ Page({
         try {
             const sheet=[]
             const childName=e.currentTarget.dataset.event1Data1
-            const childPath=this.data.tree.path+childName
+            const childPath=this.data.tree.path+"/"+childName
             const stat=app.data.wx_file.f_static_getstat(childPath)
             if(stat!=null){
                 sheet.push("DELETE")
@@ -158,7 +157,7 @@ Page({
                             this.f_save_file()
                             break;
                         case "NEXT":
-                            this.data.tree.path = childPath+"/"
+                            this.data.tree.path = childPath
                             this.setData(this.data)
                             this.f_refush_child(true)
                             break;
@@ -194,7 +193,7 @@ Page({
                             app.data.module_log.f_wx_static_show_modal("create new file:"+fileName+"?",()=>{
                                 try{
                                     app.data.module_log.f_wx_static_show_toast("保存结果："
-                                        + app.data.wx_file.f_static_writefile(this.data.tree.path+fileName, res.text))
+                                        + app.data.wx_file.f_static_writefile(this.data.tree.path+"/"+fileName, res.text))
                                     this.f_refush_child()
                                 }catch (e1){
                                     app.f_err(e1)
