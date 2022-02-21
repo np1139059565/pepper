@@ -106,7 +106,7 @@ Page({
                         this.setData(this.data)
                         this.f_refush_child(true)
                     } else {
-                        app.f_err("is root dir",parent_path)
+                        app.f_static_show_loading("is root dir",parent_path)
                     }
                     break;
                 default:
