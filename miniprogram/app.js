@@ -1,26 +1,26 @@
 // app.js
 App({
   data:{
-    c_mlog:null,
+    module_log:null,
     wx_file:null,
-    c_myun:null,
-    c_mdb:null
+    module_yun:null,
+    module_db:null
   },
   onLaunch: function () {
     //init log
     try{
-      this.data.c_mlog=require("common/wx/mlog.js")
-      this.data.c_mlog.f_static_init(this.data.c_mlog.f_static_get_types().INFO)
-      this.f_err=this.data.c_mlog.f_static_err
-      this.f_info=this.data.c_mlog.f_static_info
+      this.data.module_log=require("common/wx/mlog.js")
+      this.data.module_log.f_static_init(this.data.module_log.f_static_get_types().INFO)
+      this.f_err=this.data.module_log.f_static_err
+      this.f_info=this.data.module_log.f_static_info
       try{
         this.data.wx_file=require("common/wx/wx_file.js")
-        this.data.c_myun=require("common/wx/myun.js")
-        this.data.c_myun.f_static_init()
-        this.data.c_mdb=require("common/wx/local_db.js")
-        this.data.c_mdb.f_static_init("db_pepper")
+        this.data.module_yun=require("common/wx/myun.js")
+        this.data.module_yun.f_static_init()
+        this.data.module_db=require("common/wx/local_db.js")
+        this.data.module_db.f_static_init("db_pepper")
       }catch (e1){
-        this.data.c_mlog.f_static_err(e1)
+        this.data.module_log.f_static_err(e1)
       }
     }catch (e){
       this.f_err(e)
