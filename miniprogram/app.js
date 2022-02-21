@@ -25,6 +25,6 @@ App({
       this.data.module_log.f_static_show_loading({title:"app.js初始化失败,请退出重新打开试试!",mask:true})
     }
   },
-  f_err:(e)=>console.error(e),
-  f_info:(info_str)=>console.info(info_str)
+  f_err:console.error,
+  f_info:console.info
 });
