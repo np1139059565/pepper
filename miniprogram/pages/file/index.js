@@ -106,7 +106,7 @@ Page({
                         this.setData(this.data)
                         this.f_refush_child(true)
                     } else {
-                        app.data.module_log.f_static_show_loading("已经到根目录了！")
+                        app.data.module_log.f_static_show_loading({title:"已经到根目录了！",mask:true})
                     }
                     break;
                 default:
