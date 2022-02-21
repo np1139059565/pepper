@@ -26,7 +26,7 @@ Page({
             this.setData(this.data)
             this.f_refush_child()
         } catch (e) {
-            app.data.c_mlog.f_static_err(e)
+            app.f_err(e)
         }
     },
 
@@ -54,10 +54,10 @@ Page({
                 this.data.editor.ctx.clear()
             }
         } catch (e1) {
-            app.data.c_mlog.f_static_err(e1)
+            app.f_err(e1)
         }finally {
             this.setData(this.data)
-            app.data.c_mlog.f_static_info("refush child", this.data.tree.path)
+            app.f_info("refush child", this.data.tree.path)
         }
     },
     f_open_file: function (fileName) {
@@ -66,10 +66,10 @@ Page({
             this.data.editor.ctx.clear()
             this.data.editor.ctx.insertText({text:app.data.wx_file.f_static_readfile(this.data.tree.path + fileName)})
         } catch (e1) {
-            app.data.c_mlog.f_static_err(e1)
+            app.f_err(e1)
         }finally {
             this.setData(this.data)
-            app.data.c_mlog.f_static_info("open file",this.data.tree.path,this.data.editor.file_name)
+            app.f_info("open file",this.data.tree.path,this.data.editor.file_name)
         }
     },
     f_save_file: function () {
@@ -82,13 +82,13 @@ Page({
                                 + app.data.wx_file.f_static_writefile(this.data.tree.path+this.data.editor.file_name, res.text))
                             this.f_refush_child()
                         }catch (e){
-                            app.data.c_mlog.f_static_err(e)
+                            app.f_err(e)
                         }
                     }
                 })
             }, () => {})
         } catch (e) {
-            app.data.c_mlog.f_static_err(e)
+            app.f_err(e)
         }
     },
 
@@ -100,12 +100,12 @@ Page({
                     // back...
                     const backPath=this.data.tree.path.substr(0,
                         this.data.tree.path.substr(0,this.data.tree.path.length-1).lastIndexOf("/"))+"/"
-                    if (false==app.data.wx_file.f_static_get_absolute_path().endsWith(backPath)) {
+                    if (false == app.data.wx_file.f_static_get_absolute_path().endsWith(backPath)) {
                         this.data.tree.path = backPath
                         this.setData(this.data)
                         this.f_refush_child(true)
                     } else {
-                        app.data.c_mlog.f_static_err("is root dir",backPath)
+                        app.f_err("is root dir",backPath)
                     }
                     break;
                 default:
@@ -122,7 +122,7 @@ Page({
                     break;
             }
         } catch (e1) {
-            app.data.c_mlog.f_static_err(e1)
+            app.f_err(e1)
         }
     },
     f_show_menus: function (e) {
@@ -173,13 +173,13 @@ Page({
 
                     }
                 }catch (e1){
-                    app.data.c_mlog.f_static_err(e1)
+                    app.f_err(e1)
                 }
             },()=>{})
 
 
         } catch (e1) {
-            app.data.c_mlog.f_static_err(e1)
+            app.f_err(e1)
         }
     },
     f_edit_to_new_file:function (e){
@@ -195,17 +195,17 @@ Page({
                                         + app.data.wx_file.f_static_writefile(this.data.tree.path+fileName, res.text))
                                     this.f_refush_child()
                                 }catch (e1){
-                                    app.data.c_mlog.f_static_err(e1)
+                                    app.f_err(e1)
                                 }
                             },()=>{})
                         }
                     }catch (e1){
-                        app.data.c_mlog.f_static_err(e1)
+                        app.f_err(e1)
                     }
                 }
             })
         }catch (e1) {
-            app.data.c_mlog.f_static_err(e1)
+            app.f_err(e1)
         }
     }
 })

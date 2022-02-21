@@ -11,6 +11,8 @@ App({
     try{
       this.data.c_mlog=require("common/wx/mlog.js")
       this.data.c_mlog.f_static_init(this.data.c_mlog.f_static_get_types().INFO)
+      this.f_err=this.data.c_mlog.f_static_err
+      this.f_info=this.data.c_mlog.f_static_info
       try{
         this.data.wx_file=require("common/wx/wx_file.js")
         this.data.c_myun=require("common/wx/myun.js")
@@ -21,7 +23,9 @@ App({
         this.data.c_mlog.f_static_err(e1)
       }
     }catch (e){
-      console.error(e)
+      this.f_err(e)
     }
-  }
+  },
+  f_err:(e)=>console.error(e),
+  f_info:(info_str)=>console.info(info_str)
 });
