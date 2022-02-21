@@ -32,7 +32,7 @@ exports.main = async(params, context) => {//查数据库只能使用异步接口
 function f_get_table(params){
     try{
         var hand=""
-        for (var h in geo) {
+        for (var h in params.geo) {
             //前端只支持doc.update,服务端还支持where.update//cloud.database().collection('kiwi').doc(id)
             switch (h) {
                 case "where":
