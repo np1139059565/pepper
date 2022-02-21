@@ -77,11 +77,11 @@ Page({
     },
     f_save_file: function () {
         try {
-            app.data.module_log.f_wx_static_show_modal("保存?",() => {
+            app.data.module_log.f_static_show_modal("保存?",() => {
                 this.data.editor.ctx.getContents({
                     success:res=>{
                         try{
-                            app.data.module_log.f_wx_static_show_toast("保存结果："
+                            app.data.module_log.f_static_show_toast("保存结果："
                                 + app.data.wx_file.f_static_writefile(this.data.tree.path+"/"+this.data.editor.file_name, res.text))
                             this.f_refush_child()
                         }catch (e){
@@ -106,7 +106,7 @@ Page({
                         this.setData(this.data)
                         this.f_refush_child(true)
                     } else {
-                        app.data.module_log.f_static_show_loading(null,{title:"已经到根目录了！",mask:true})
+                        app.data.module_log.f_static_show_toast("已经到根目录了！")
                     }
                     break;
                 default:
@@ -143,12 +143,12 @@ Page({
                     }
                 }
             }
-            app.data.module_log.f_wx_static_show_sheet(sheet,(sval,sindex)=>{
+            app.data.module_log.f_static_show_sheet(sheet,(sval,sindex)=>{
                 try{
                     switch (sval){
                         case "DELETE":
-                            app.data.module_log.f_wx_static_show_modal("确定删除 " + childName + "?", () => {
-                                app.data.module_log.f_wx_static_show_toast("del is "+app.data.wx_file.f_static_rmpath(childPath))
+                            app.data.module_log.f_static_show_modal("确定删除 " + childName + "?", () => {
+                                app.data.module_log.f_static_show_toast("del is "+app.data.wx_file.f_static_rmpath(childPath))
                                 this.f_refush_child(true)
                             }, () => {
                             })
@@ -163,7 +163,7 @@ Page({
                             break;
                         case "OPEN":
                             if (stat.size > 1024) {
-                                app.data.module_log.f_wx_static_show_modal("文件过大，任然打开?", () => {
+                                app.data.module_log.f_static_show_modal("文件过大，任然打开?", () => {
                                     this.f_open_file(childName)
                                 }, () => {
                                 })
@@ -190,9 +190,9 @@ Page({
                     try{
                         const fileName=res.text.split("\n")[0].trim()
                         if(fileName!=""){
-                            app.data.module_log.f_wx_static_show_modal("create new file:"+fileName+"?",()=>{
+                            app.data.module_log.f_static_show_modal("create new file:"+fileName+"?",()=>{
                                 try{
-                                    app.data.module_log.f_wx_static_show_toast("保存结果："
+                                    app.data.module_log.f_static_show_toast("保存结果："
                                         + app.data.wx_file.f_static_writefile(this.data.tree.path+"/"+fileName, res.text))
                                     this.f_refush_child()
                                 }catch (e1){
