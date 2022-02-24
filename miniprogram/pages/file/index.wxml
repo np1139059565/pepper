@@ -4,10 +4,10 @@
     <editor class="c-editor" id="i-editor"></editor>
     <!--    tree-->
     <view class="c-tree">
-        <view class="c-absolute" catchlongpress="f_edit_to_new_file">absolute:{{tree.path}}</view>
+        <view class="c-absolute" catchlongpress="f_create_new_file">absolute:{{tree.path}}</view>
         <view class="c-childs">
             <view class="c-child" wx:for="{{tree.child_arr}}"
-                  catchtap="f_next" data-event1-data1="{{item.evData}}"
+                  catchtap="f_click" data-event1-data1="{{item.evData}}"
                   catchlongpress="f_show_menus">{{item.text}}
             </view>
         </view>

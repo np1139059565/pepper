@@ -14,6 +14,7 @@ App({
       // this.data.module_log.f_static_init(this.data.module_log.f_static_get_log_types().INFO)
       this.f_err=this.data.module_log.f_static_err
       this.f_info=this.data.module_log.f_static_info
+      this.f_info("aaaaaaaaaaaaa")
       //init all module
       this.data.wx_file=require("common/wx/wx_file.js")
       this.data.module_yun=require("common/wx/myun.js")
@@ -21,10 +22,13 @@ App({
       this.data.module_db=require("common/wx/local_db.js")
       this.data.module_db.f_static_init("db_pepper",wx.hideLoading)
     }catch (e){
-      this.f_err(e)
-      this.data.module_log.f_static_show_loading({title:"app.js初始化失败,请退出重新打开试试!",mask:true})
+      this.f_errrrr(e)
     }
   },
+  f_info:console.info,
   f_err:console.error,
-  f_info:console.info
+  f_errrr:()=>{
+    this.f_err(e)
+    this.data.module_log.f_static_show_loading({title:"遇到不可预测的错误,请退出重新打开试试!",mask:true})
+  }
 });
