@@ -22,7 +22,7 @@ App({
       this.data.module_db=require("common/wx/local_db.js")
       this.data.module_db.f_static_init("db_pepper",wx.hideLoading)
     }catch (e){
-      this.f_errrrr(e)
+      this.f_errrr(e)
     }
   },
   f_info:console.info,
