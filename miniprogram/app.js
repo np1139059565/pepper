@@ -27,7 +27,7 @@ App({
   },
   f_info:console.info,
   f_err:console.error,
-  f_errrr:function(){//!!!!!!不能使用箭头函数'()=>{}'否则没办法获取this
+  f_errrr:function(e){//!!!!!!不能使用箭头函数'()=>{}'否则没办法获取this
     this.f_err(e)
     this.data.module_log.f_static_show_loading({title:"遇到不可预测的错误,请退出重新打开试试!",mask:true})
   }
