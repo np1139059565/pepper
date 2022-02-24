@@ -6,7 +6,7 @@ App({
     module_yun:null,
     module_db:null
   },
-  onLaunch: function () {
+  onLaunch: function () {//!!!!!!不能使用箭头函数'()=>{}'否则没办法获取this
     try{
       //init log
       this.data.module_log=require("common/wx/mlog.js")
@@ -22,13 +22,9 @@ App({
       this.data.module_db=require("common/wx/local_db.js")
       this.data.module_db.f_static_init("db_pepper",wx.hideLoading)
     }catch (e){
-      this.f_errrr(e)
+      this.f_err(e)
     }
   },
   f_info:console.info,
-  f_err:console.error,
-  f_errrr:function(e){//!!!!!!不能使用箭头函数'()=>{}'否则没办法获取this
-    this.f_err(e)
-    this.data.module_log.f_static_show_loading("遇到不可预测的错误,请退出重新打开试试!",{mask:true})
-  }
+  f_err:console.error
 });
